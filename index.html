@@ -49,11 +49,20 @@
     width:28px;height:28px;border-radius:8px;background:var(--blauw);color:#fff;
     font-family:Montserrat,sans-serif;font-weight:800;font-size:14px;
     display:flex;align-items:center;justify-content:center}
-  .stappen li b{display:block}
+  .stappen li > b:first-child{display:block}
   .stappen li span{color:var(--grijs);font-size:15px}
   code{font-family:ui-monospace,Menlo,monospace;font-size:14px;background:var(--blauw-zacht);
        color:var(--blauw);padding:2px 6px;border-radius:5px;word-break:break-word}
 
+  .vraag{position:relative;margin:12px 0 12px}
+  .vraag pre{background:#0E2138;color:#D6E4F5;border-radius:11px;padding:16px 18px;margin:0;
+             font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:1.6;
+             white-space:pre-wrap;overflow-x:auto}
+  .vraag .kopieer{position:absolute;top:10px;right:10px;background:#1E3A5C;color:#D6E4F5;
+                  border:1px solid #2B4E77;border-radius:8px;font:inherit;font-size:12px;font-weight:600;
+                  padding:5px 11px;cursor:pointer}
+  .vraag .kopieer:hover{background:#28496F;color:#fff}
+  .stappen li span + .vraag{margin-top:10px}
   .let{background:var(--oranje-zacht);border:1px solid #F3D7AE;border-left:5px solid var(--oranje);
        border-radius:12px;padding:16px 20px;margin-top:20px}
   .let b{color:#8A4E06}
@@ -72,40 +81,22 @@
     <div class="streep"></div>
     <p class="merk">Sessie 14 september 2026</p>
     <h1>Margemeter voor de bakkerij</h1>
-    <p>Alles wat je in de zaal zag staat hier klaar. Je kunt het meteen openen, of het op je eigen computer zetten en er je eigen cijfers in doen.</p>
+    <p>Het systeem dat je in de zaal zag. Bekijk het hier meteen, of zet het op je eigen computer met je eigen recepten en facturen erin.</p>
   </div>
 </header>
 
 <main class="wrap">
 
   <div class="kaarten">
-    <a class="kaart" href="margecalculator/index.html">
-      <div class="top"><h2>Open de margemeter</h2><span class="pijl">&rarr;</span></div>
-      <p>Schuif aan de grondstofprijzen en zie welk product je marge opvreet, en wat dat je per jaar kost. Dit is wat er in de zaal in tien minuten gebouwd is.</p>
+    <a class="kaart" href="webversie/index.html">
+      <div class="top"><h2>Bekijk het bakkerijsysteem</h2><span class="pijl">&rarr;</span></div>
+      <p>Je marge per product, je voorraad met de partij waar je nu uit bakt, je receptuur op bakkerspercentage, en de marktnoteringen voor tarwe, boter en suiker. Kijken en aan de schuiven trekken kan meteen, je eigen cijfers erin zetten doe je in de versie op je eigen computer.</p>
       <span class="tag">Werkt meteen, ook op je telefoon</span>
     </a>
 
-    <a class="kaart" href="webversie/index.html">
-      <div class="top"><h2>Bekijk het bakkerijsysteem</h2><span class="pijl">&rarr;</span></div>
-      <p>Marge per product, je voorraad met de partij waar je nu uit bakt, je receptuur op bakkerspercentage en de marktnoteringen. Dit is de kijkversie: alles bekijken en aan de schuiven trekken kan, je eigen cijfers erin zetten doe je in de versie op je eigen computer.</p>
-      <span class="tag">Kijkversie, werkt meteen</span>
-    </a>
-
-    <a class="kaart" href="presentatie.html">
-      <div class="top"><h2>De presentatie terugkijken</h2><span class="pijl">&rarr;</span></div>
-      <p>Alle slides van het halve uur, om op je gemak nog eens door te klikken.</p>
-      <span class="tag">Het mooist op een laptop</span>
-    </a>
-
-    <a class="kaart" href="handout-prompt.pdf">
-      <div class="top"><h2>De opdracht, om zelf te bouwen</h2><span class="pijl">&rarr;</span></div>
-      <p>Het kaartje van twee kantjes. Hierin staat woord voor woord wat je in Claude Code typt om de margemeter zelf te maken.</p>
-      <span class="tag">pdf om te printen</span>
-    </a>
-
     <a class="kaart" href="https://github.com/toine-code/bakkerij-margemeter/archive/refs/heads/main.zip">
-      <div class="top"><h2>Alles downloaden</h2><span class="pijl">&darr;</span></div>
-      <p>Eén bestand met het complete pakket: de margemeter, het bakkerijsysteem, de opdracht en de startknoppen.</p>
+      <div class="top"><h2>Download het pakket</h2><span class="pijl">&darr;</span></div>
+      <p>Het complete systeem om op je eigen computer te zetten. Hieronder staat in vier stappen hoe je het aan de praat krijgt.</p>
       <span class="tag">zip, ongeveer 2 MB</span>
     </a>
   </div>
@@ -117,17 +108,49 @@
   tarwe, rogge, boter en suiker die het systeem zelf ophaalt bij de Europese Commissie.</p>
 
   <ol class="stappen">
-    <li><b>Download het pakket</b><span>Gebruik de knop hierboven en pak het bestand uit, bijvoorbeeld op je bureaublad.</span></li>
-    <li><b>Dubbelklik de startknop</b><span>Op een Mac <code>Start bakkerijsysteem.command</code>, op Windows <code>Start bakkerijsysteem.bat</code>. De eerste keer duurt het een halve minuut.</span></li>
-    <li><b>Je browser gaat vanzelf open</b><span>Er blijft ook een zwart venster openstaan, dat hoort zo. Sluit je dat, dan stopt het systeem.</span></li>
-    <li><b>Zet je eigen cijfers erin</b><span>In het tabblad Je eigen cijfers zet je je facturen of je receptenboek neer en vraag je Claude Code om het systeem bij te werken. Of je vult de lijsten zelf in Excel in.</span></li>
-  </ol>
+    <li><b>Haal Claude Code op</b><span>Ga naar <a href="https://claude.com/download">claude.com/download</a>,
+      installeer het en log in. Je hebt een betaald abonnement nodig, Pro kost ongeveer 20 dollar per maand.
+      Gratis werkt hier niet.</span></li>
 
-  <p style="color:var(--grijs);font-size:15px">Er is Python 3 voor nodig. Op een Mac staat dat er al.
-  Op Windows haal je het eenmalig op bij <a href="https://www.python.org/downloads/">python.org</a>,
-  en vink je bij het installeren "Add Python to PATH" aan. De eerste keer waarschuwt je computer dat
-  het bestand van internet komt: op een Mac klik je met rechts op de startknop en kies je Openen,
-  op Windows klik je op Meer informatie en dan Toch uitvoeren.</p>
+    <li><b>Download het pakket</b><span>Gebruik de knop hierboven en pak het bestand uit, bijvoorbeeld op je
+      bureaublad. Je houdt een map over die <code>bakkerij-margemeter-main</code> heet.</span></li>
+
+    <li><b>Geef die map aan Claude Code</b><span>Open Claude Code, kies het tabblad <code>Code</code>, klik op
+      <b>Select folder</b> en kies die map. Plak dan dit:</span>
+      <div class="vraag">
+        <button class="kopieer" type="button">Kopieer</button>
+        <pre>Start het bakkerijsysteem uit deze map en zet het open in mijn browser.
+Als er iets ontbreekt om het te laten draaien, installeer dat dan eerst
+en leg in gewone taal uit wat je doet.</pre>
+      </div>
+      <span>Je browser gaat vanzelf open op het systeem. Liever zonder Claude Code? Dubbelklik dan
+      <code>Start bakkerijsysteem.command</code> op een Mac of <code>Start bakkerijsysteem.bat</code>
+      op Windows.</span>
+    </li>
+
+    <li><b>Zet je eigen cijfers erin</b><span>In het systeem zit het tabblad <b>Je eigen cijfers</b>. Daar zit
+      een knop waarmee je je eigen bestanden inlaadt: je inkoopfacturen, je receptenboek, je prijslijst.
+      Een pdf, een Excel-bestand of een foto van een papiertje, het maakt niet uit. Zet ze neer en plak
+      daarna dit in Claude Code:</span>
+      <div class="vraag">
+        <button class="kopieer" type="button">Kopieer</button>
+        <pre>Lees de bestanden in de map bakkerijsysteem/data/aangeleverd en werk mijn
+bakkerijsysteem daarmee bij.
+
+Het gaat om mijn eigen inkoopprijzen, mijn recepten en mijn verkoopprijzen.
+Zet ze in bakkerijsysteem/data/grondstoffen.json, recepten.json en inkoop.json,
+in dezelfde vorm als wat daar nu al staat. Maak eerst een kopie van die drie
+bestanden, zodat ik terug kan.
+
+De recepten staan op bakkerspercentage, dus alles ten opzichte van het meel.
+Inkoopprijzen zijn per 100 kg. Verkoopprijzen zijn inclusief btw.
+
+Vertel me daarna in gewone taal wat je hebt gewijzigd, en wat je niet kon
+plaatsen omdat het niet duidelijk was.</pre>
+      </div>
+      <span>Ververs daarna het scherm. Vanaf dat moment gaan alle cijfers over jouw bakkerij.</span>
+    </li>
+  </ol>
 
   <div class="let">
     <b>Vier dingen om te weten</b>
@@ -142,10 +165,33 @@
   <footer>
     <p><b>Toine Boelens</b>, YUTU, Den Bosch<br>
     <a href="mailto:toine@yutugrow.nl">toine@yutugrow.nl</a> &middot; loop je vast, mail gerust, ik kijk mee.</p>
+    <p style="font-size:14.5px">Ook nog hier: <a href="presentatie.html">de presentatie terugkijken</a>
+    &middot; <a href="handout-prompt.pdf">het kaartje met de opdracht</a>
+    &middot; <a href="margecalculator/index.html">de losse margemeter</a></p>
     <p style="font-size:14px;color:var(--zacht)">De broncode staat op
     <a href="https://github.com/toine-code/bakkerij-margemeter">github.com/toine-code/bakkerij-margemeter</a>.</p>
   </footer>
 
 </main>
+
+<script>
+  document.querySelectorAll(".vraag .kopieer").forEach(knop => {
+    knop.addEventListener("click", async () => {
+      const tekst = knop.parentElement.querySelector("pre").textContent;
+      try {
+        await navigator.clipboard.writeText(tekst);
+        knop.textContent = "Gekopieerd";
+      } catch (fout) {
+        const bereik = document.createRange();
+        bereik.selectNodeContents(knop.parentElement.querySelector("pre"));
+        const selectie = window.getSelection();
+        selectie.removeAllRanges();
+        selectie.addRange(bereik);
+        knop.textContent = "Geselecteerd";
+      }
+      setTimeout(() => { knop.textContent = "Kopieer"; }, 2400);
+    });
+  });
+</script>
 </body>
 </html>
