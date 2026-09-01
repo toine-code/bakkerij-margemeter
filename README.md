@@ -18,6 +18,15 @@ is te omzeilen:
 - **Windows:** dubbelklik `Start bakkerijsysteem.bat`. Zie je een blauw scherm met
   "Windows heeft uw pc beveiligd", klik dan op **Meer informatie** en **Toch uitvoeren**.
 
+## Meteen bekijken, zonder iets te installeren
+
+- De margemeter: `margecalculator/index.html`
+- Het bakkerijsysteem, kijkversie: `webversie/index.html`
+
+Allebei openen ze in je browser. In de kijkversie van het systeem kun je alles bekijken
+en aan de schuiven trekken, maar je eigen cijfers erin zetten doe je in de versie die op
+je eigen computer draait. Die staat verderop uitgelegd.
+
 ## 1. De margemeter
 
 `margecalculator/index.html` is één bestand. Dubbelklik het en het opent in je

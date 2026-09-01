@@ -517,6 +517,36 @@ def lees_csv(tekst):
     return kolommen, rijen
 
 
+# ---------------------------------------------------------------------------
+# Kijkversie voor het web
+#
+# Op een website kan geen Python draaien, dus daar kan het systeem niet zelf
+# rekenen. Oplossing: we rekenen hier één keer alles uit en splitsen de kostprijs
+# per grondstofgroep. De browser hoeft dan alleen nog te vermenigvuldigen om een
+# scenario te tonen. Zo blijft dit bestand de enige plek waar de echte
+# berekening staat, en kan de webversie er nooit vanaf gaan wijken.
+# ---------------------------------------------------------------------------
+def webgegevens(db=None):
+    db = db or laad()
+    basis = overzicht(db, {})
+    for product, recept in zip(basis["producten"], db["recepten"]):
+        per_groep = {}
+        for regel in product["regels"]:
+            groep = regel["groep"] or "Overig"
+            per_groep[groep] = round(per_groep.get(groep, 0.0) + regel["per_stuk"], 6)
+        if product["verpakking"]:
+            per_groep["Verpakking"] = round(per_groep.get("Verpakking", 0.0)
+                                            + product["verpakking"], 6)
+        product["kosten_per_groep"] = per_groep
+
+        # controle: de som moet exact de kostprijs zijn, anders klopt de webversie niet
+        som = sum(per_groep.values()) + product["arbeid"] + product["oven"]
+        product["klopt"] = abs(som - product["kostprijs"]) < 0.005
+        product.pop("regels_lagen", None)
+    basis["kijkversie"] = True
+    return basis
+
+
 def main():
     db = laad()
     presets = scenario_presets(db)
