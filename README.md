@@ -3,6 +3,21 @@
 Wat je zag tijdens de presentatie, om zelf mee verder te gaan. Twee dingen zitten
 erin, van klein naar groot.
 
+## Eerst even downloaden
+
+Klik hierboven op de groene knop **Code** en kies **Download ZIP**. Pak het bestand uit,
+bijvoorbeeld op je bureaublad.
+
+De eerste keer waarschuwt je computer dat het van internet komt. Dat hoort erbij en het
+is te omzeilen:
+
+- **Mac:** klik met rechts op `Start bakkerijsysteem.command`, kies **Openen**, en klik in
+  het venstertje nog een keer op **Openen**. Daarna kun je gewoon dubbelklikken.
+  Zegt hij "permission denied", open dan Terminal, typ `chmod +x ` (met een spatie erachter),
+  sleep het bestand in het venster en druk op enter.
+- **Windows:** dubbelklik `Start bakkerijsysteem.bat`. Zie je een blauw scherm met
+  "Windows heeft uw pc beveiligd", klik dan op **Meer informatie** en **Toch uitvoeren**.
+
 ## 1. De margemeter
 
 `margecalculator/index.html` is één bestand. Dubbelklik het en het opent in je
