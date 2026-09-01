@@ -126,6 +126,24 @@
   .formulier button{align-self:flex-end}
   .uitslag{font-size:13px;margin:14px 0 0;min-height:1em}
   .uitslag.goed{color:var(--goed)} .uitslag.fout{color:var(--verlies)}
+  .opgooi{display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+          border:2px dashed var(--lijn);border-radius:12px;padding:22px 24px;background:#FBFCFE}
+  .opgooi-uitleg{font-size:13px;color:var(--muted)}
+  #aangeleverd-lijst:not(:empty){margin-top:16px}
+  .aangeleverd{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .aangeleverd .bestand{display:inline-flex;gap:8px;align-items:baseline;font-size:12.5px;
+                        border:1px solid var(--lijn);border-radius:8px;padding:6px 11px;background:#fff}
+  .aangeleverd .bestand b{font-weight:600}
+  .aangeleverd .bestand span{color:var(--zacht)}
+  .aangeleverd .wissen{font-size:12.5px;color:var(--muted);background:none;border:none;
+                       cursor:pointer;text-decoration:underline;padding:4px}
+  .aangeleverd .wissen:hover{color:var(--verlies)}
+  .vraagblok{margin-top:20px;border-top:1px solid var(--lijn);padding-top:18px}
+  .vraagkop{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:10px}
+  .vraagkop h3{font-family:Montserrat,sans-serif;font-size:15px}
+  #vraagtekst{background:#0E2138;color:#D6E4F5;border-radius:12px;padding:18px 20px;margin:0;
+              font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:1.6;
+              white-space:pre-wrap;overflow-x:auto}
   .sjablonen{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px}
   .sjabloon{border:1px solid var(--lijn);border-radius:12px;padding:16px 18px;background:#fff;
             display:flex;flex-direction:column;gap:10px}
@@ -316,12 +334,51 @@
   <!-- ============================ EIGEN CIJFERS ============================ -->
   <section id="tab-eigen" class="verborgen">
     <div class="kaart">
-      <h2>Je eigen recepten en prijzen erin</h2>
+      <h2>Zet je eigen bestanden erin</h2>
       <p class="sub">
-        Vier lijsten, in Excel te openen. Download er een, hij is al gevuld met wat er nu in het
-        systeem staat. Vervang de regels door die van jou, sla op als csv, en zet hem hier terug.
-        Er gaat altijd eerst een kopie van je oude gegevens naar <code>data/kopieen/</code>,
-        dus je kunt nooit iets kwijtraken.
+        Je facturen, je receptenboek, je prijslijst. Een pdf, een Excel-bestand, een foto van een
+        papiertje: het maakt niet uit. Je zet ze hier neer en vraagt daarna aan Claude Code om het
+        systeem ermee bij te werken. Die leest ze en zet de cijfers op de juiste plek.
+      </p>
+      <div class="opgooi" id="opgooi">
+        <label class="knop vol">Bestanden kiezen<input type="file" id="bestanden" multiple></label>
+        <span class="opgooi-uitleg" id="opgooi-uitleg">Je kunt er meerdere tegelijk kiezen.</span>
+      </div>
+      <div id="aangeleverd-lijst"></div>
+
+      <div class="vraagblok">
+        <div class="vraagkop">
+          <h3>Vraag dit daarna aan Claude Code</h3>
+          <button class="knop" id="knop-kopieer">Tekst kopieren</button>
+        </div>
+        <pre id="vraagtekst">Lees de bestanden in de map bakkerijsysteem/data/aangeleverd en werk mijn
+bakkerijsysteem daarmee bij.
+
+Het gaat om mijn eigen inkoopprijzen, mijn recepten en mijn verkoopprijzen.
+Zet ze in bakkerijsysteem/data/grondstoffen.json, recepten.json en inkoop.json,
+in dezelfde vorm als wat daar nu al staat. Maak eerst een kopie van die drie
+bestanden, zodat ik terug kan.
+
+De recepten staan op bakkerspercentage, dus alles ten opzichte van het meel.
+Inkoopprijzen zijn per 100 kg. Verkoopprijzen zijn inclusief btw.
+
+Vertel me daarna in gewone taal wat je hebt gewijzigd, en wat je niet kon
+plaatsen omdat het niet duidelijk was.</pre>
+        <p class="sub" style="margin:12px 0 0">
+          Open Claude Code in de map waar dit systeem staat, plak deze tekst, en druk op enter.
+          Ververs daarna dit scherm. Je hoeft niets te leren over de vorm van de bestanden, dat
+          zoekt hij zelf uit.
+        </p>
+      </div>
+    </div>
+
+    <div class="kaart">
+      <h2>Liever zelf in Excel</h2>
+      <p class="sub">
+        Kan ook, zonder Claude Code eraan te pas te laten komen. Download een lijst, hij is al
+        gevuld met wat er nu in het systeem staat. Vervang de regels door die van jou, sla op als
+        csv, en zet hem hier terug. Er gaat altijd eerst een kopie van je oude gegevens naar
+        <code>data/kopieen/</code>, dus je kunt nooit iets kwijtraken.
       </p>
       <div class="sjablonen" id="sjablonen"></div>
       <p class="sub" style="margin:20px 0 0">
@@ -620,6 +677,73 @@ function tekenNoteringen() {
 // ---------------------------------------------------------------------------
 // Bediening
 // ---------------------------------------------------------------------------
+async function tekenAangeleverd() {
+  const lijst = el("aangeleverd-lijst");
+  try {
+    const uit = await haal("/api/aangeleverd");
+    if (!uit.bestanden.length) { lijst.innerHTML = ""; return; }
+    lijst.innerHTML = `<div class="aangeleverd">`
+      + uit.bestanden.map(b => `<span class="bestand"><b>${b.naam}</b><span>${(b.bytes / 1024).toFixed(0)} kB</span></span>`).join("")
+      + `<button class="wissen" id="knop-wis">alles weghalen</button></div>`;
+    el("knop-wis").addEventListener("click", async () => {
+      await haal("/api/aangeleverd/wissen", {method: "POST"});
+      tekenAangeleverd();
+    });
+  } catch (fout) {
+    lijst.innerHTML = "";
+  }
+}
+
+function leesAlsBase64(bestand) {
+  return new Promise((klaar, mis) => {
+    const lezer = new FileReader();
+    lezer.onload = () => klaar(lezer.result);
+    lezer.onerror = () => mis(new Error("kon " + bestand.name + " niet lezen"));
+    lezer.readAsDataURL(bestand);
+  });
+}
+
+el("bestanden").addEventListener("change", async gebeurtenis => {
+  const uitleg = el("opgooi-uitleg");
+  const bestanden = Array.from(gebeurtenis.target.files || []);
+  if (!bestanden.length) return;
+  let gelukt = 0;
+  const mislukt = [];
+  for (const bestand of bestanden) {
+    uitleg.textContent = "Bezig met " + bestand.name + "...";
+    try {
+      const inhoud = await leesAlsBase64(bestand);
+      const uit = await haal("/api/aangeleverd", {
+        method: "POST", headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({naam: bestand.name, inhoud}),
+      });
+      if (uit.fout) mislukt.push(bestand.name + ": " + uit.fout); else gelukt++;
+    } catch (fout) {
+      mislukt.push(bestand.name + ": " + fout.message);
+    }
+  }
+  uitleg.textContent = gelukt + " bestand" + (gelukt === 1 ? "" : "en") + " klaargezet."
+    + (mislukt.length ? " Niet gelukt: " + mislukt.join("; ") : " Vraag hieronder aan Claude Code om ze te verwerken.");
+  gebeurtenis.target.value = "";
+  tekenAangeleverd();
+});
+
+el("knop-kopieer").addEventListener("click", async () => {
+  const knop = el("knop-kopieer");
+  try {
+    await navigator.clipboard.writeText(el("vraagtekst").textContent);
+    knop.textContent = "Gekopieerd";
+  } catch (fout) {
+    const bereik = document.createRange();
+    bereik.selectNodeContents(el("vraagtekst"));
+    const selectie = window.getSelection();
+    selectie.removeAllRanges();
+    selectie.addRange(bereik);
+    knop.textContent = "Geselecteerd, druk nu op cmd-c";
+  }
+  setTimeout(() => { knop.textContent = "Tekst kopieren"; }, 2600);
+});
+
 async function tekenSjablonen() {
   const bak = el("sjablonen");
   if (bak.dataset.klaar) return;
@@ -685,7 +809,7 @@ function lijstje(problemen) {
 document.querySelectorAll("nav.tabs button").forEach(knop => {
   knop.addEventListener("click", () => {
     document.querySelectorAll("nav.tabs button").forEach(k => k.setAttribute("aria-selected", String(k === knop)));
-    if (knop.dataset.tab === "eigen") tekenSjablonen().catch(() => {});
+    if (knop.dataset.tab === "eigen") { tekenSjablonen().catch(() => {}); tekenAangeleverd(); }
     for (const naam of ["marge", "voorraad", "recepten", "markt", "eigen"]) {
       el("tab-" + naam).classList.toggle("verborgen", naam !== knop.dataset.tab);
     }

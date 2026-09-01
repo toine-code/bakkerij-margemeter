@@ -23,7 +23,7 @@ Daarna staat alles op `http://localhost:8777`. Stoppen doe je met ctrl-c.
 | Voorraad en FIFO | Alle partijen op datum, hoelang je voorraad nog duurt, en het verschil tussen je voorraadprijs en vandaag bijkopen |
 | Recepten | Receptuur op bakkerspercentage, deeggewicht, bakverlies en kostprijsopbouw |
 | Marktnoteringen | De weeknoteringen die het systeem zelf ophaalt, met hun verloop over twee jaar |
-| Je eigen cijfers | Vier lijsten om te downloaden, in Excel in te vullen en terug te zetten |
+| Je eigen cijfers | Je eigen bestanden erin zetten, en vier lijsten voor wie het liever in Excel doet |
 
 **Twee kostprijzen, en het verschil is de kern.** De FIFO-kostprijs rekent met de partij
 waar je nu echt uit bakt, oudste eerst. De vervangingswaarde rekent alsof je vandaag
@@ -64,7 +64,14 @@ dan mag het wel. Vandaar `start.py`.
 
 ## Je eigen cijfers erin
 
-**De makkelijke weg: het tabblad Je eigen cijfers.** Daar download je vier lijsten die al
+**De kortste weg: gooi je bestanden erin en vraag het aan Claude Code.** In het tabblad
+Je eigen cijfers zet je je facturen, je receptenboek of je prijslijst neer. Pdf, Excel,
+een foto van een papiertje, het maakt niet uit. Ze belanden in `data/aangeleverd/`. Daar
+staat een kant en klare vraag bij die je in Claude Code plakt: hij leest de bestanden en
+zet de cijfers op de juiste plek, met een kopie van je oude gegevens vooraf. Je hoeft
+niets te weten over de vorm van de bestanden.
+
+**Liever zelf in Excel.** Op hetzelfde tabblad download je vier lijsten die al
 gevuld zijn met wat er nu in het systeem staat. Je opent ze in Excel, vervangt de regels
 door die van jou, slaat op als csv en zet ze terug. Puntkomma of komma maakt niet uit, en
 een prijs mag als 48,50 of als 48.50.

@@ -90,6 +90,16 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 db = kostprijs.laad()
                 return self.stuur_json(db["noteringen"])
 
+            if pad.path == "/api/aangeleverd":
+                map_ = DATA / "aangeleverd"
+                bestanden = []
+                if map_.exists():
+                    for f in sorted(map_.iterdir()):
+                        if f.is_file() and not f.name.startswith("."):
+                            bestanden.append({"naam": f.name, "bytes": f.stat().st_size})
+                return self.stuur_json({"bestanden": bestanden,
+                                        "map": str(map_.relative_to(HIER.parent))})
+
             if pad.path == "/api/sjablonen":
                 return self.stuur_json({"sjablonen": [
                     dict(soort=soort, **{k: v for k, v in vorm.items() if k != "kolommen"},
@@ -148,6 +158,21 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 schrijf("grondstoffen.json", grond)
                 return self.stuur_json({"ok": True, "levering": nieuw})
 
+            if pad == "/api/aangeleverd":
+                body = self.lees_json()
+                return self.stuur_json(bewaar_aangeleverd(body.get("naam", ""),
+                                                          body.get("inhoud", "")))
+
+            if pad == "/api/aangeleverd/wissen":
+                map_ = DATA / "aangeleverd"
+                weg = 0
+                if map_.exists():
+                    for f in list(map_.iterdir()):
+                        if f.is_file() and not f.name.startswith("."):
+                            f.unlink()
+                            weg += 1
+                return self.stuur_json({"ok": True, "verwijderd": weg})
+
             if pad.startswith("/api/import/"):
                 soort = pad.rsplit("/", 1)[-1]
                 body = self.lees_json()
@@ -161,6 +186,45 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return self.stuur_json({"fout": str(fout)}, 500)
 
         return self.stuur_json({"fout": "onbekend adres"}, 404)
+
+
+MAX_BESTAND = 25 * 1024 * 1024      # 25 MB, ruim genoeg voor een factuur of een spreadsheet
+
+
+def bewaar_aangeleverd(naam, inhoud_base64):
+    """
+    Zet een bestand dat de bakker aanlevert in data/aangeleverd/.
+
+    We lezen het niet uit en we snappen het niet. Dat is precies de bedoeling:
+    Claude Code kijkt er straks naar. Wij zorgen alleen dat het bestand veilig
+    op de juiste plek terechtkomt.
+    """
+    import base64
+    schoon = pathlib.Path(naam or "").name          # geen paden, alleen de bestandsnaam
+    schoon = re.sub(r"[^A-Za-z0-9._ ()-]", "_", schoon).strip() or "bestand"
+    if schoon.startswith("."):
+        schoon = "bestand" + schoon
+
+    kop, _, data = inhoud_base64.partition(",")     # data:...;base64,AAAA
+    ruw = data if data else kop
+    try:
+        bytes_ = base64.b64decode(ruw, validate=False)
+    except Exception:
+        return {"fout": "kon het bestand niet lezen"}
+    if not bytes_:
+        return {"fout": "het bestand is leeg"}
+    if len(bytes_) > MAX_BESTAND:
+        return {"fout": "dit bestand is groter dan 25 MB, dat is te groot"}
+
+    map_ = DATA / "aangeleverd"
+    map_.mkdir(exist_ok=True)
+    doel = map_ / schoon
+    teller = 2
+    while doel.exists():                            # nooit stilletjes iets overschrijven
+        doel = map_ / ("%s-%d%s" % (pathlib.Path(schoon).stem, teller, pathlib.Path(schoon).suffix))
+        teller += 1
+    doel.write_bytes(bytes_)
+    return {"ok": True, "naam": doel.name, "bytes": len(bytes_)}
 
 
 def bewaar_kopie(naam):

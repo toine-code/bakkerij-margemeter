@@ -47,10 +47,18 @@ Sluit je dat venster, dan stopt het systeem.
 Er is Python 3 voor nodig. Op een Mac staat dat er al. Op Windows haal je het
 eenmalig op bij python.org, en vink je bij het installeren "Add Python to PATH" aan.
 
-## Je eigen cijfers erin, via Excel
+## Je eigen cijfers erin
 
-In het systeem zit een tabblad **Je eigen cijfers**. Daar staan vier lijsten klaar,
-alvast gevuld met de voorbeeldgegevens:
+In het systeem zit een tabblad **Je eigen cijfers**. Daar kan het op twee manieren.
+
+**De kortste weg.** Je hebt Claude Code toch al. Zet je facturen, je receptenboek of je
+prijslijst in het scherm neer, in welke vorm dan ook: pdf, Excel, of een foto van een
+papiertje. Er staat een kant en klare vraag bij. Die plak je in Claude Code, en hij leest
+de bestanden en zet je cijfers op de juiste plek. Van je oude gegevens wordt eerst een
+kopie gemaakt. Je hoeft niets te weten over hoe die bestanden eruit moeten zien.
+
+**Liever zelf in Excel.** Op hetzelfde tabblad staan vier lijsten klaar, alvast gevuld
+met de voorbeeldgegevens:
 
 - je inkoopprijzen, per 100 kg, zoals ze op de factuur van je leverancier staan
 - je recepten, met je verkoopprijzen en hoeveel je er per week van verkoopt
