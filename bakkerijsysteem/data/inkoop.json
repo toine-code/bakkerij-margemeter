@@ -1,0 +1,508 @@
+{
+  "leveringen": [
+    {
+      "id": "L001",
+      "grondstof": "bloem-patent",
+      "datum": "2026-05-28",
+      "aantal": 2000.0,
+      "restant": 0.0,
+      "prijs_per_100": 44.1,
+      "batch": "BLO-260528"
+    },
+    {
+      "id": "L002",
+      "grondstof": "bloem-patent",
+      "datum": "2026-07-02",
+      "aantal": 2000.0,
+      "restant": 780.0,
+      "prijs_per_100": 45.8,
+      "batch": "BLO-260702"
+    },
+    {
+      "id": "L003",
+      "grondstof": "bloem-patent",
+      "datum": "2026-08-06",
+      "aantal": 2000.0,
+      "restant": 2000.0,
+      "prijs_per_100": 48.5,
+      "batch": "BLO-260806"
+    },
+    {
+      "id": "L004",
+      "grondstof": "bloem-brood",
+      "datum": "2026-07-09",
+      "aantal": 1000.0,
+      "restant": 320.0,
+      "prijs_per_100": 44.9,
+      "batch": "BLO-260709"
+    },
+    {
+      "id": "L005",
+      "grondstof": "bloem-brood",
+      "datum": "2026-08-13",
+      "aantal": 1000.0,
+      "restant": 1000.0,
+      "prijs_per_100": 46.8,
+      "batch": "BLO-260813"
+    },
+    {
+      "id": "L006",
+      "grondstof": "meel-volkoren",
+      "datum": "2026-06-25",
+      "aantal": 1500.0,
+      "restant": 410.0,
+      "prijs_per_100": 42.3,
+      "batch": "MEE-260625"
+    },
+    {
+      "id": "L007",
+      "grondstof": "meel-volkoren",
+      "datum": "2026-08-07",
+      "aantal": 1500.0,
+      "restant": 1500.0,
+      "prijs_per_100": 45.2,
+      "batch": "MEE-260807"
+    },
+    {
+      "id": "L008",
+      "grondstof": "meel-spelt",
+      "datum": "2026-06-21",
+      "aantal": 400.0,
+      "restant": 95.0,
+      "prijs_per_100": 88.0,
+      "batch": "MEE-260621"
+    },
+    {
+      "id": "L009",
+      "grondstof": "meel-spelt",
+      "datum": "2026-08-09",
+      "aantal": 400.0,
+      "restant": 400.0,
+      "prijs_per_100": 92.0,
+      "batch": "MEE-260809"
+    },
+    {
+      "id": "L010",
+      "grondstof": "meel-rogge",
+      "datum": "2026-07-05",
+      "aantal": 600.0,
+      "restant": 180.0,
+      "prijs_per_100": 51.5,
+      "batch": "MEE-260705"
+    },
+    {
+      "id": "L011",
+      "grondstof": "meel-rogge",
+      "datum": "2026-08-11",
+      "aantal": 600.0,
+      "restant": 600.0,
+      "prijs_per_100": 54.0,
+      "batch": "MEE-260811"
+    },
+    {
+      "id": "L012",
+      "grondstof": "gries-durum",
+      "datum": "2026-06-13",
+      "aantal": 200.0,
+      "restant": 140.0,
+      "prijs_per_100": 84.0,
+      "batch": "GRI-260613"
+    },
+    {
+      "id": "L013",
+      "grondstof": "zemelen",
+      "datum": "2026-07-18",
+      "aantal": 150.0,
+      "restant": 92.0,
+      "prijs_per_100": 32.0,
+      "batch": "ZEM-260718"
+    },
+    {
+      "id": "L014",
+      "grondstof": "roomboter",
+      "datum": "2026-06-09",
+      "aantal": 200.0,
+      "restant": 0.0,
+      "prijs_per_100": 1020.0,
+      "batch": "ROO-260609"
+    },
+    {
+      "id": "L015",
+      "grondstof": "roomboter",
+      "datum": "2026-07-14",
+      "aantal": 200.0,
+      "restant": 46.0,
+      "prijs_per_100": 880.0,
+      "batch": "ROO-260714"
+    },
+    {
+      "id": "L016",
+      "grondstof": "roomboter",
+      "datum": "2026-08-18",
+      "aantal": 250.0,
+      "restant": 250.0,
+      "prijs_per_100": 780.0,
+      "batch": "ROO-260818"
+    },
+    {
+      "id": "L017",
+      "grondstof": "plaatboter",
+      "datum": "2026-07-11",
+      "aantal": 150.0,
+      "restant": 38.0,
+      "prijs_per_100": 940.0,
+      "batch": "PLA-260711"
+    },
+    {
+      "id": "L018",
+      "grondstof": "plaatboter",
+      "datum": "2026-08-15",
+      "aantal": 150.0,
+      "restant": 150.0,
+      "prijs_per_100": 845.0,
+      "batch": "PLA-260815"
+    },
+    {
+      "id": "L019",
+      "grondstof": "margarine",
+      "datum": "2026-07-23",
+      "aantal": 300.0,
+      "restant": 165.0,
+      "prijs_per_100": 218.0,
+      "batch": "MAR-260723"
+    },
+    {
+      "id": "L020",
+      "grondstof": "margarine",
+      "datum": "2026-08-20",
+      "aantal": 300.0,
+      "restant": 300.0,
+      "prijs_per_100": 225.0,
+      "batch": "MAR-260820"
+    },
+    {
+      "id": "L021",
+      "grondstof": "melk-vol",
+      "datum": "2026-08-22",
+      "aantal": 400.0,
+      "restant": 315.0,
+      "prijs_per_100": 95.0,
+      "batch": "MEL-260822"
+    },
+    {
+      "id": "L022",
+      "grondstof": "slagroom",
+      "datum": "2026-08-24",
+      "aantal": 120.0,
+      "restant": 88.0,
+      "prijs_per_100": 420.0,
+      "batch": "SLA-260824"
+    },
+    {
+      "id": "L023",
+      "grondstof": "karnemelk",
+      "datum": "2026-08-22",
+      "aantal": 150.0,
+      "restant": 96.0,
+      "prijs_per_100": 80.0,
+      "batch": "KAR-260822"
+    },
+    {
+      "id": "L024",
+      "grondstof": "ei-vloeibaar",
+      "datum": "2026-08-23",
+      "aantal": 250.0,
+      "restant": 172.0,
+      "prijs_per_100": 330.0,
+      "batch": "EI--260823"
+    },
+    {
+      "id": "L025",
+      "grondstof": "maanzaad",
+      "datum": "2026-06-18",
+      "aantal": 80.0,
+      "restant": 26.0,
+      "prijs_per_100": 455.0,
+      "batch": "MAA-260618"
+    },
+    {
+      "id": "L026",
+      "grondstof": "maanzaad",
+      "datum": "2026-08-14",
+      "aantal": 80.0,
+      "restant": 80.0,
+      "prijs_per_100": 480.0,
+      "batch": "MAA-260814"
+    },
+    {
+      "id": "L027",
+      "grondstof": "zonnebloempit",
+      "datum": "2026-06-27",
+      "aantal": 200.0,
+      "restant": 54.0,
+      "prijs_per_100": 182.0,
+      "batch": "ZON-260627"
+    },
+    {
+      "id": "L028",
+      "grondstof": "zonnebloempit",
+      "datum": "2026-08-12",
+      "aantal": 200.0,
+      "restant": 200.0,
+      "prijs_per_100": 195.0,
+      "batch": "ZON-260812"
+    },
+    {
+      "id": "L029",
+      "grondstof": "sesamzaad",
+      "datum": "2026-06-23",
+      "aantal": 100.0,
+      "restant": 61.0,
+      "prijs_per_100": 268.0,
+      "batch": "SES-260623"
+    },
+    {
+      "id": "L030",
+      "grondstof": "lijnzaad",
+      "datum": "2026-06-23",
+      "aantal": 120.0,
+      "restant": 78.0,
+      "prijs_per_100": 158.0,
+      "batch": "LIJ-260623"
+    },
+    {
+      "id": "L031",
+      "grondstof": "pompoenpit",
+      "datum": "2026-06-05",
+      "aantal": 50.0,
+      "restant": 31.0,
+      "prijs_per_100": 505.0,
+      "batch": "POM-260605"
+    },
+    {
+      "id": "L032",
+      "grondstof": "amandelschaaf",
+      "datum": "2026-07-01",
+      "aantal": 60.0,
+      "restant": 22.0,
+      "prijs_per_100": 1140.0,
+      "batch": "AMA-260701"
+    },
+    {
+      "id": "L033",
+      "grondstof": "amandelschaaf",
+      "datum": "2026-08-17",
+      "aantal": 60.0,
+      "restant": 60.0,
+      "prijs_per_100": 1180.0,
+      "batch": "AMA-260817"
+    },
+    {
+      "id": "L034",
+      "grondstof": "hazelnoot",
+      "datum": "2026-06-03",
+      "aantal": 30.0,
+      "restant": 21.0,
+      "prijs_per_100": 1450.0,
+      "batch": "HAZ-260603"
+    },
+    {
+      "id": "L035",
+      "grondstof": "suiker",
+      "datum": "2026-07-07",
+      "aantal": 500.0,
+      "restant": 140.0,
+      "prijs_per_100": 128.0,
+      "batch": "SUI-260707"
+    },
+    {
+      "id": "L036",
+      "grondstof": "suiker",
+      "datum": "2026-08-10",
+      "aantal": 500.0,
+      "restant": 500.0,
+      "prijs_per_100": 135.0,
+      "batch": "SUI-260810"
+    },
+    {
+      "id": "L037",
+      "grondstof": "basterdsuiker",
+      "datum": "2026-07-19",
+      "aantal": 200.0,
+      "restant": 118.0,
+      "prijs_per_100": 149.0,
+      "batch": "BAS-260719"
+    },
+    {
+      "id": "L038",
+      "grondstof": "spijs",
+      "datum": "2026-07-30",
+      "aantal": 300.0,
+      "restant": 96.0,
+      "prijs_per_100": 655.0,
+      "batch": "SPI-260730"
+    },
+    {
+      "id": "L039",
+      "grondstof": "spijs",
+      "datum": "2026-08-21",
+      "aantal": 300.0,
+      "restant": 300.0,
+      "prijs_per_100": 680.0,
+      "batch": "SPI-260821"
+    },
+    {
+      "id": "L040",
+      "grondstof": "chocolade",
+      "datum": "2026-07-26",
+      "aantal": 120.0,
+      "restant": 44.0,
+      "prijs_per_100": 812.0,
+      "batch": "CHO-260726"
+    },
+    {
+      "id": "L041",
+      "grondstof": "chocolade",
+      "datum": "2026-08-19",
+      "aantal": 120.0,
+      "restant": 120.0,
+      "prijs_per_100": 850.0,
+      "batch": "CHO-260819"
+    },
+    {
+      "id": "L042",
+      "grondstof": "rozijn",
+      "datum": "2026-06-29",
+      "aantal": 100.0,
+      "restant": 58.0,
+      "prijs_per_100": 325.0,
+      "batch": "ROZ-260629"
+    },
+    {
+      "id": "L043",
+      "grondstof": "kaneel",
+      "datum": "2026-05-29",
+      "aantal": 10.0,
+      "restant": 7.0,
+      "prijs_per_100": 1100.0,
+      "batch": "KAN-260529"
+    },
+    {
+      "id": "L044",
+      "grondstof": "appel",
+      "datum": "2026-08-26",
+      "aantal": 400.0,
+      "restant": 268.0,
+      "prijs_per_100": 165.0,
+      "batch": "APP-260826"
+    },
+    {
+      "id": "L045",
+      "grondstof": "gist",
+      "datum": "2026-08-25",
+      "aantal": 120.0,
+      "restant": 78.0,
+      "prijs_per_100": 280.0,
+      "batch": "GIS-260825"
+    },
+    {
+      "id": "L046",
+      "grondstof": "zout",
+      "datum": "2026-06-15",
+      "aantal": 300.0,
+      "restant": 164.0,
+      "prijs_per_100": 62.0,
+      "batch": "ZOU-260615"
+    },
+    {
+      "id": "L047",
+      "grondstof": "verbeteraar",
+      "datum": "2026-07-28",
+      "aantal": 150.0,
+      "restant": 71.0,
+      "prijs_per_100": 378.0,
+      "batch": "VER-260728"
+    },
+    {
+      "id": "L048",
+      "grondstof": "verbeteraar",
+      "datum": "2026-08-22",
+      "aantal": 150.0,
+      "restant": 150.0,
+      "prijs_per_100": 390.0,
+      "batch": "VER-260822"
+    },
+    {
+      "id": "L049",
+      "grondstof": "desem",
+      "datum": "2026-08-16",
+      "aantal": 200.0,
+      "restant": 142.0,
+      "prijs_per_100": 210.0,
+      "batch": "DES-260816"
+    },
+    {
+      "id": "L050",
+      "grondstof": "water",
+      "datum": "2026-08-31",
+      "aantal": 50000.0,
+      "restant": 50000.0,
+      "prijs_per_100": 0.15,
+      "batch": "WAT-260831"
+    },
+    {
+      "id": "L051",
+      "grondstof": "gehakt",
+      "datum": "2026-08-28",
+      "aantal": 300.0,
+      "restant": 214.0,
+      "prijs_per_100": 780.0,
+      "batch": "GEH-260828"
+    },
+    {
+      "id": "L052",
+      "grondstof": "kaas-belegen",
+      "datum": "2026-08-23",
+      "aantal": 60.0,
+      "restant": 38.0,
+      "prijs_per_100": 920.0,
+      "batch": "KAA-260823"
+    },
+    {
+      "id": "L053",
+      "grondstof": "zak-brood",
+      "datum": "2026-08-02",
+      "aantal": 20000.0,
+      "restant": 12400.0,
+      "prijs_per_100": 5.0,
+      "batch": "ZAK-260802"
+    },
+    {
+      "id": "L054",
+      "grondstof": "zak-klein",
+      "datum": "2026-08-02",
+      "aantal": 30000.0,
+      "restant": 19800.0,
+      "prijs_per_100": 2.2,
+      "batch": "ZAK-260802"
+    },
+    {
+      "id": "L055",
+      "grondstof": "doos-taart",
+      "datum": "2026-07-16",
+      "aantal": 1500.0,
+      "restant": 860.0,
+      "prijs_per_100": 45.0,
+      "batch": "DOO-260716"
+    },
+    {
+      "id": "L056",
+      "grondstof": "doos-gebak",
+      "datum": "2026-07-16",
+      "aantal": 2000.0,
+      "restant": 1240.0,
+      "prijs_per_100": 9.5,
+      "batch": "DOO-260716"
+    }
+  ]
+}

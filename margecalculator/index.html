@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Margemeter Bakkerij</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --paper:#F6F8FC; --card:#FFFFFF; --ink:#0A1A2E; --muted:#5A6B82;
+    --blue:#0C4DA2; --blue-soft:#E8F0FB; --orange:#F28E1C; --orange-soft:#FFF3E4;
+    --line:#DCE4EE; --good:#1E7A46; --good-soft:#E7F5EE;
+    --warn:#B45309; --warn-soft:#FFF4E0; --bad:#B3261E; --bad-soft:#FDECEA;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:Inter,-apple-system,"Segoe UI",Arial,sans-serif; font-size:15px; line-height:1.5;
+  }
+  h1,h2,h3{font-family:Montserrat,Inter,sans-serif; margin:0}
+  .wrap{max-width:1240px; margin:0 auto; padding:0 20px 80px}
+
+  header.top{background:var(--ink); color:#fff; padding:26px 0 22px; margin-bottom:0}
+  header.top .wrap{padding-bottom:0}
+  .eyebrow{font-size:11px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--orange); margin:0 0 8px}
+  header.top h1{font-size:30px; font-weight:800; letter-spacing:-.01em}
+  header.top p{margin:8px 0 0; color:#A9BBD3; max-width:70ch}
+
+  .banner{
+    background:var(--orange-soft); border:1px solid #F3D7AE; border-left:5px solid var(--orange);
+    border-radius:10px; padding:14px 18px; margin:22px 0 26px; font-size:14px;
+  }
+  .banner strong{color:#8A4E06}
+
+  .scenario{
+    position:sticky; top:0; z-index:20; background:var(--card); border:1px solid var(--line);
+    border-radius:14px; padding:18px 20px 16px; box-shadow:0 6px 22px rgba(10,26,46,.07); margin-bottom:26px;
+  }
+  .scenario .head{display:flex; align-items:baseline; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:14px}
+  .scenario h2{font-size:16px}
+  .scenario .head .hint{font-size:13px; color:var(--muted)}
+  .sliders{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:16px}
+  .slider label{display:flex; justify-content:space-between; font-size:13px; font-weight:600; margin-bottom:6px}
+  .slider label .val{color:var(--blue); font-variant-numeric:tabular-nums}
+  input[type=range]{width:100%; accent-color:var(--blue)}
+  .scenario .impact{
+    margin-top:16px; padding-top:14px; border-top:1px solid var(--line);
+    display:flex; gap:26px; flex-wrap:wrap; align-items:baseline;
+  }
+  .impact .big{font-family:Montserrat,sans-serif; font-weight:800; font-size:26px; font-variant-numeric:tabular-nums}
+  .impact .lbl{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-weight:600}
+  .impact .neg{color:var(--bad)}
+  .btn{
+    border:1px solid var(--line); background:#fff; color:var(--ink); font:inherit; font-weight:600;
+    font-size:13px; padding:8px 14px; border-radius:8px; cursor:pointer;
+  }
+  .btn:hover{border-color:var(--blue); color:var(--blue)}
+  .btn.mkt{background:var(--blue); color:#fff; border-color:var(--blue)}
+  .btn.mkt:hover{background:#0A4189; color:#fff}
+  .markt{
+    margin-top:16px; padding-top:14px; border-top:1px solid var(--line);
+    display:flex; gap:14px; align-items:center; flex-wrap:wrap; font-size:13.5px;
+  }
+  .markt .chip{
+    display:flex; gap:10px; align-items:baseline; background:#F4F7FC; border:1px solid var(--line);
+    border-radius:10px; padding:9px 14px;
+  }
+  .markt .chip .nm{font-weight:600}
+  .markt .chip .pr{color:var(--muted); font-variant-numeric:tabular-nums}
+  .markt .chip .jj{font-weight:700; font-variant-numeric:tabular-nums}
+  .markt .chip .jj.op{color:var(--bad)}
+  .markt .chip .jj.af{color:var(--good)}
+  .markt .bron{color:var(--muted); font-size:12px; margin-left:auto; text-align:right; line-height:1.35}
+
+  .grid{display:grid; grid-template-columns:1.65fr 1fr; gap:26px; align-items:start}
+  @media(max-width:960px){ .grid{grid-template-columns:1fr} .scenario{position:static} }
+
+  .panel{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px 22px 22px}
+  .panel > h2{font-size:17px; margin-bottom:4px}
+  .panel > .sub{font-size:13px; color:var(--muted); margin:0 0 16px}
+
+  table{width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums}
+  th{
+    text-align:right; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted);
+    font-weight:700; padding:0 8px 8px; border-bottom:1px solid var(--line); white-space:nowrap;
+  }
+  th:first-child{text-align:left}
+  td{padding:11px 8px; border-bottom:1px solid #EEF2F7; text-align:right}
+  td:first-child{text-align:left}
+  tr.prod{cursor:pointer}
+  tr.prod:hover td{background:#F7FAFE}
+  .pname{font-weight:600}
+  .pmeta{display:block; font-size:12px; color:var(--muted); font-weight:400; margin-top:2px}
+  .pill{
+    display:inline-block; font-size:11px; font-weight:700; padding:3px 9px; border-radius:999px; white-space:nowrap;
+  }
+  .pill.good{background:var(--good-soft); color:var(--good)}
+  .pill.warn{background:var(--warn-soft); color:var(--warn)}
+  .pill.bad{background:var(--bad-soft); color:var(--bad)}
+  .bar{height:8px; border-radius:4px; background:#EDF1F7; overflow:hidden; min-width:70px}
+  .bar > i{display:block; height:100%; border-radius:4px}
+  .delta{font-size:12px; font-weight:600}
+  .delta.neg{color:var(--bad)}
+  .delta.zero{color:var(--muted); font-weight:400}
+
+  tr.detail td{background:#F7FAFE; padding:0; border-bottom:1px solid var(--line)}
+  .detailbox{padding:16px 14px 18px; display:grid; grid-template-columns:1.2fr 1fr; gap:22px}
+  @media(max-width:720px){ .detailbox{grid-template-columns:1fr} }
+  .detailbox h3{font-size:13px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin-bottom:8px}
+  .mini{width:100%; font-size:13px; border-collapse:collapse}
+  .mini td{padding:5px 6px; border-bottom:1px dotted #DDE4EE}
+  .mini tr:last-child td{border-bottom:none; font-weight:700}
+  .stack{display:flex; height:26px; border-radius:6px; overflow:hidden; margin-bottom:10px}
+  .stack > span{display:block}
+  .legend{display:flex; gap:14px; flex-wrap:wrap; font-size:12px; color:var(--muted)}
+  .legend i{display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:5px}
+
+  .ing{display:grid; grid-template-columns:1fr auto; gap:8px 10px; align-items:center}
+  .ing .nm{font-size:13.5px}
+  .ing .nm small{color:var(--muted); display:block; font-size:11.5px}
+  .ing input{
+    width:88px; text-align:right; font:inherit; font-size:13.5px; font-variant-numeric:tabular-nums;
+    border:1px solid var(--line); border-radius:7px; padding:6px 8px; background:#fff;
+  }
+  .ing input:focus{outline:2px solid var(--blue-soft); border-color:var(--blue)}
+  .ing .row{display:contents}
+  .ing .up{font-size:12px; color:var(--bad); font-weight:600; text-align:right}
+  .divider{grid-column:1/-1; border-top:1px solid var(--line); margin:6px 0 2px}
+  .sublabel{grid-column:1/-1; font-size:11px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); margin-top:10px}
+
+  footer.foot{margin-top:34px; color:var(--muted); font-size:13px; border-top:1px solid var(--line); padding-top:18px}
+  footer.foot b{color:var(--ink)}
+  @media print{
+    .scenario{position:static; box-shadow:none}
+    body{background:#fff}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">Margemeter</p>
+    <h1>Welk product vreet je marge op?</h1>
+    <p>Schuif aan de grondstofprijzen en zie meteen wat er met de marge per product gebeurt, en wat het je per week kost.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="banner">
+    <strong>Let op: dit zijn voorbeeldcijfers, geen bakkerswaarheid.</strong>
+    De inkoopprijzen, recepten en verkoopprijzen hiernaast zijn ingevuld om het model te laten werken.
+    Zet er je eigen inkoopfacturen en je eigen prijskaart in, dan pas zegt de uitkomst iets over jouw bakkerij.
+  </div>
+
+  <section class="scenario">
+    <div class="head">
+      <h2>Wat als de prijzen stijgen?</h2>
+      <span class="hint">Schuif en kijk onderin de tabel wat er rood wordt.</span>
+    </div>
+    <div class="sliders">
+      <div class="slider">
+        <label for="s-bloem">Bloem en meel <span class="val" id="v-bloem">+0%</span></label>
+        <input type="range" id="s-bloem" min="-50" max="100" step="5" value="0">
+      </div>
+      <div class="slider">
+        <label for="s-zuivel">Roomboter en zuivel <span class="val" id="v-zuivel">+0%</span></label>
+        <input type="range" id="s-zuivel" min="-50" max="100" step="5" value="0">
+      </div>
+      <div class="slider">
+        <label for="s-overig">Overige grondstoffen <span class="val" id="v-overig">+0%</span></label>
+        <input type="range" id="s-overig" min="-50" max="100" step="5" value="0">
+      </div>
+      <div class="slider">
+        <label for="s-loon">Loon en energie <span class="val" id="v-loon">+0%</span></label>
+        <input type="range" id="s-loon" min="-50" max="100" step="5" value="0">
+      </div>
+    </div>
+    <div class="markt" id="markt"></div>
+    <div class="impact">
+      <div>
+        <div class="lbl">Marge per week nu</div>
+        <div class="big" id="week-now">&euro; 0</div>
+      </div>
+      <div>
+        <div class="lbl">Verschil met basis</div>
+        <div class="big" id="week-delta">&euro; 0</div>
+      </div>
+      <div>
+        <div class="lbl">Per jaar</div>
+        <div class="big" id="year-delta">&euro; 0</div>
+      </div>
+      <div style="margin-left:auto; align-self:center">
+        <button class="btn" id="reset">Terug naar basis</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="grid">
+
+    <section class="panel">
+      <h2>Marge per product</h2>
+      <p class="sub">Slechtste marge bovenaan. Klik op een regel voor de opbouw van de kostprijs.</p>
+      <table id="tbl">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Verkoop</th>
+            <th>Kostprijs</th>
+            <th>Marge</th>
+            <th>Marge %</th>
+            <th style="width:110px">Per week</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <p class="sub" style="margin-top:14px">
+        Verkoopprijs is inclusief 9% btw, marge wordt gerekend over de prijs exclusief btw.
+        Groen vanaf 60% marge, oranje tussen 45% en 60%, rood daaronder.
+      </p>
+    </section>
+
+    <aside class="panel">
+      <h2>Inkoopprijzen</h2>
+      <p class="sub">Pas aan naar je eigen facturen. Rood is wat de schuiven er bovenop doen.</p>
+      <div class="ing" id="ings"></div>
+      <div class="sublabel">Uurloon en oven</div>
+      <div class="ing" id="vaste"></div>
+    </aside>
+
+  </div>
+
+  <footer class="foot">
+    <b>Gebouwd in Claude Code</b>, in een half uur, met de prompt die je hebt meegekregen.
+    Alles rekent in je eigen browser. Je eigen inkoopprijzen gaan nooit het internet op, alleen de marktnoteringen komen binnen.
+    Wil je hem uitbreiden? Vraag Claude bijvoorbeeld om een tweede tabblad met je weekomzet, of om een knop die een prijskaart afdrukt.
+  </footer>
+
+</div>
+
+<script>
+// ---------------------------------------------------------------------------
+// Voorbeelddata. Vervang de prijzen door je eigen inkoop en de recepten door
+// je eigen receptuur, de rest van het model blijft gewoon werken.
+// ---------------------------------------------------------------------------
+/*NOTERINGEN_START*/
+const NOTERINGEN = {
+  "opgehaald": "2026-09-01",
+  "zuivel": {
+    "naam": "Boter, Nederlandse notering",
+    "eenheid": "per 100 kg",
+    "prijs": 400.0,
+    "datum": "2026-08-23",
+    "vorig_jaar": 682.0,
+    "verandering": -41.3,
+    "bron": "Europese Commissie, zuivelmarktnoteringen"
+  },
+  "bloem": {
+    "naam": "Baktarwe, Duitse notering",
+    "eenheid": "per ton",
+    "prijs": 233.0,
+    "datum": "2026-08-02",
+    "vorig_jaar": 191.25,
+    "verandering": 21.8,
+    "bron": "Europese Commissie, graanmarktnoteringen"
+  }
+};
+/*NOTERINGEN_END*/
+
+const GROEP = { BLOEM:'bloem', ZUIVEL:'zuivel', OVERIG:'overig' };
+
+const ingredienten = {
+  bloem:      { naam:'Tarwebloem',        eenheid:'kg', prijs:0.95, groep:GROEP.BLOEM },
+  speltmeel:  { naam:'Speltmeel',         eenheid:'kg', prijs:1.85, groep:GROEP.BLOEM },
+  roomboter:  { naam:'Roomboter',         eenheid:'kg', prijs:9.50, groep:GROEP.ZUIVEL },
+  melk:       { naam:'Volle melk',        eenheid:'l',  prijs:0.95, groep:GROEP.ZUIVEL },
+  slagroom:   { naam:'Slagroom',          eenheid:'l',  prijs:4.20, groep:GROEP.ZUIVEL },
+  ei:         { naam:'Eieren',            eenheid:'kg', prijs:4.20, groep:GROEP.ZUIVEL },
+  suiker:     { naam:'Suiker',            eenheid:'kg', prijs:1.30, groep:GROEP.OVERIG },
+  gist:       { naam:'Gist',              eenheid:'kg', prijs:3.00, groep:GROEP.OVERIG },
+  zout:       { naam:'Zout',              eenheid:'kg', prijs:0.60, groep:GROEP.OVERIG },
+  spijs:      { naam:'Amandelspijs',      eenheid:'kg', prijs:6.80, groep:GROEP.OVERIG },
+  chocolade:  { naam:'Chocoladestaafjes', eenheid:'kg', prijs:8.50, groep:GROEP.OVERIG },
+  appel:      { naam:'Appels',            eenheid:'kg', prijs:1.60, groep:GROEP.OVERIG },
+  gehakt:     { naam:'Gehakt',            eenheid:'kg', prijs:7.50, groep:GROEP.OVERIG },
+  rozijn:     { naam:'Rozijnen',          eenheid:'kg', prijs:3.40, groep:GROEP.OVERIG }
+};
+
+// Uurloon en ovenkosten schuiven mee met de schuif "loon en energie".
+const vast = {
+  uurloon:  { naam:'Uurloon bakkerij',    eenheid:'per uur',  waarde:24.00 },
+  ovenuur:  { naam:'Oven en koeling',     eenheid:'per uur',  waarde:6.50 }
+};
+
+const BTW = 0.09;
+
+const producten = [
+  { naam:'Wit tarwebrood 800 g', cat:'Brood', verkoopIncl:3.25, perWeek:900,
+    stuksPerBatch:30, arbeidMin:20, ovenMin:55, verpakking:0.05,
+    recept:{ bloem:0.500, gist:0.010, zout:0.010 } },
+
+  { naam:'Desem vloerbrood', cat:'Brood', verkoopIncl:3.95, perWeek:250,
+    stuksPerBatch:20, arbeidMin:20, ovenMin:60, verpakking:0.06,
+    recept:{ speltmeel:0.300, bloem:0.250, zout:0.012 } },
+
+  { naam:'Roomboter croissant', cat:'Vienn.', verkoopIncl:1.60, perWeek:600,
+    stuksPerBatch:60, arbeidMin:22, ovenMin:35, verpakking:0.02,
+    recept:{ bloem:0.045, roomboter:0.025, melk:0.015, suiker:0.005, gist:0.002, ei:0.004 } },
+
+  { naam:'Chocoladebroodje', cat:'Vienn.', verkoopIncl:1.75, perWeek:350,
+    stuksPerBatch:60, arbeidMin:25, ovenMin:35, verpakking:0.02,
+    recept:{ bloem:0.045, roomboter:0.025, chocolade:0.012, melk:0.015, gist:0.002, ei:0.004 } },
+
+  { naam:'Worstenbroodje', cat:'Hartig', verkoopIncl:2.25, perWeek:500,
+    stuksPerBatch:50, arbeidMin:20, ovenMin:30, verpakking:0.03,
+    recept:{ bloem:0.060, roomboter:0.015, gehakt:0.060, ei:0.005 } },
+
+  { naam:'Amandelstaaf', cat:'Banket', verkoopIncl:4.75, perWeek:120,
+    stuksPerBatch:24, arbeidMin:18, ovenMin:30, verpakking:0.08,
+    recept:{ bloem:0.060, roomboter:0.060, spijs:0.120, ei:0.010, suiker:0.010 } },
+
+  { naam:'Appeltaart heel', cat:'Banket', verkoopIncl:18.95, perWeek:60,
+    stuksPerBatch:6, arbeidMin:30, ovenMin:60, verpakking:0.45,
+    recept:{ appel:1.200, bloem:0.400, roomboter:0.250, suiker:0.180, rozijn:0.080, ei:0.060 } },
+
+  { naam:'Slagroomtaart 8 personen', cat:'Banket', verkoopIncl:22.50, perWeek:45,
+    stuksPerBatch:8, arbeidMin:60, ovenMin:30, verpakking:0.55,
+    recept:{ slagroom:0.400, ei:0.220, suiker:0.140, bloem:0.120, appel:0.150 } }
+];
+
+// ---------------------------------------------------------------------------
+// Rekenwerk
+// ---------------------------------------------------------------------------
+const stijging = { bloem:0, zuivel:0, overig:0, loon:0 };
+
+function prijsVan(key){
+  const ing = ingredienten[key];
+  return ing.prijs * (1 + stijging[ing.groep] / 100);
+}
+function loonFactor(){ return 1 + stijging.loon / 100; }
+
+function berekenProduct(p){
+  let ingr = 0;
+  const regels = [];
+  for (const [key, hoeveelheid] of Object.entries(p.recept)){
+    const kosten = prijsVan(key) * hoeveelheid;
+    ingr += kosten;
+    regels.push({ naam:ingredienten[key].naam, hoeveelheid, eenheid:ingredienten[key].eenheid, kosten });
+  }
+  const arbeid = (p.arbeidMin / 60) * vast.uurloon.waarde * loonFactor() / p.stuksPerBatch;
+  const oven   = (p.ovenMin  / 60) * vast.ovenuur.waarde * loonFactor() / p.stuksPerBatch;
+  const kostprijs = ingr + arbeid + oven + p.verpakking;
+  const verkoopExcl = p.verkoopIncl / (1 + BTW);
+  const marge = verkoopExcl - kostprijs;
+  return {
+    regels, ingr, arbeid, oven, verpakking:p.verpakking,
+    kostprijs, verkoopExcl, marge,
+    margePct: marge / verkoopExcl * 100,
+    weekMarge: marge * p.perWeek
+  };
+}
+
+let basis = null;              // snapshot zonder stijging, voor het verschil
+function maakBasis(){
+  const bewaar = { ...stijging };
+  stijging.bloem = stijging.zuivel = stijging.overig = stijging.loon = 0;
+  basis = producten.map(berekenProduct);
+  Object.assign(stijging, bewaar);
+}
+
+// ---------------------------------------------------------------------------
+// Tonen
+// ---------------------------------------------------------------------------
+const euro = n => '€ ' + n.toLocaleString('nl-NL', {minimumFractionDigits:2, maximumFractionDigits:2});
+const euro0 = n => '€ ' + Math.round(n).toLocaleString('nl-NL');
+
+function klasse(pct){ return pct >= 60 ? 'good' : pct >= 45 ? 'warn' : 'bad'; }
+function kleur(pct){
+  return pct >= 60 ? getComputedStyle(document.documentElement).getPropertyValue('--good')
+       : pct >= 45 ? getComputedStyle(document.documentElement).getPropertyValue('--orange')
+       : getComputedStyle(document.documentElement).getPropertyValue('--bad');
+}
+
+const open = new Set();
+
+function render(){
+  const rows = document.getElementById('rows');
+  const berekend = producten.map((p, i) => ({ p, r:berekenProduct(p), b:basis[i], i }));
+  berekend.sort((a, z) => a.r.margePct - z.r.margePct);
+
+  rows.innerHTML = '';
+  for (const item of berekend){
+    const { p, r, b, i } = item;
+    const tr = document.createElement('tr');
+    tr.className = 'prod';
+    tr.dataset.i = i;
+    const dPct = r.margePct - b.margePct;
+    tr.innerHTML =
+      '<td><span class="pname">' + p.naam + '</span>' +
+        '<span class="pmeta">' + p.cat + ' &middot; ' + p.perWeek.toLocaleString('nl-NL') + ' per week</span></td>' +
+      '<td>' + euro(p.verkoopIncl) + '</td>' +
+      '<td>' + euro(r.kostprijs) +
+        (Math.abs(r.kostprijs - b.kostprijs) > 0.005
+          ? '<div class="delta neg">+' + euro(r.kostprijs - b.kostprijs) + '</div>' : '') + '</td>' +
+      '<td>' + euro(r.marge) + '</td>' +
+      '<td><span class="pill ' + klasse(r.margePct) + '">' + r.margePct.toFixed(0) + '%</span>' +
+        (Math.abs(dPct) > 0.05 ? '<div class="delta neg">' + dPct.toFixed(1) + ' pnt</div>' : '') + '</td>' +
+      '<td><div class="bar"><i style="width:' + Math.max(2, Math.min(100, r.margePct)) + '%;background:' + kleur(r.margePct) + '"></i></div>' +
+        '<div class="delta zero">' + euro0(r.weekMarge) + '</div></td>';
+    rows.appendChild(tr);
+
+    if (open.has(i)){
+      const d = document.createElement('tr');
+      d.className = 'detail';
+      d.innerHTML = '<td colspan="6">' + detailHtml(p, r) + '</td>';
+      rows.appendChild(d);
+    }
+  }
+
+  // Weektotalen
+  const nu   = berekend.reduce((s, x) => s + x.r.weekMarge, 0);
+  const was  = berekend.reduce((s, x) => s + x.b.weekMarge, 0);
+  const verschil = nu - was;
+  document.getElementById('week-now').textContent = euro0(nu);
+  const dEl = document.getElementById('week-delta');
+  dEl.textContent = (verschil < -0.5 ? '' : '+') + euro0(verschil);
+  dEl.className = 'big' + (verschil < -0.5 ? ' neg' : '');
+  const yEl = document.getElementById('year-delta');
+  yEl.textContent = (verschil < -0.5 ? '' : '+') + euro0(verschil * 52);
+  yEl.className = 'big' + (verschil < -0.5 ? ' neg' : '');
+
+  renderIngredienten();
+}
+
+function detailHtml(p, r){
+  const kleuren = ['#0C4DA2', '#F28E1C', '#5A6B82', '#8FB4E4'];
+  const delen = [
+    { naam:'Grondstoffen', v:r.ingr },
+    { naam:'Arbeid',       v:r.arbeid },
+    { naam:'Oven',         v:r.oven },
+    { naam:'Verpakking',   v:r.verpakking }
+  ];
+  const stack = delen.map((d, i) =>
+    '<span style="width:' + (d.v / r.kostprijs * 100) + '%;background:' + kleuren[i] + '"></span>').join('');
+  const legend = delen.map((d, i) =>
+    '<span><i style="background:' + kleuren[i] + '"></i>' + d.naam + ' ' + euro(d.v) + '</span>').join('');
+  const regels = r.regels
+    .sort((a, b) => b.kosten - a.kosten)
+    .map(x => '<tr><td>' + x.naam + '</td><td style="text-align:right;color:#5A6B82">' +
+      (x.hoeveelheid * 1000).toLocaleString('nl-NL') + ' ' + (x.eenheid === 'l' ? 'ml' : 'g') +
+      '</td><td style="text-align:right">' + euro(x.kosten) + '</td></tr>').join('');
+  return '<div class="detailbox">' +
+    '<div><h3>Waar de kostprijs in zit</h3>' +
+      '<div class="stack">' + stack + '</div><div class="legend">' + legend + '</div>' +
+      '<p style="font-size:13px;color:#5A6B82;margin:12px 0 0">' +
+        'Batch van ' + p.stuksPerBatch + ' stuks, ' + p.arbeidMin + ' minuten werk en ' + p.ovenMin + ' minuten oven. ' +
+        'Verkoop ' + euro(p.verkoopIncl) + ' inclusief btw is ' + euro(r.verkoopExcl) + ' exclusief.' +
+      '</p></div>' +
+    '<div><h3>Grondstoffen per stuk</h3><table class="mini">' + regels +
+      '<tr><td>Totaal grondstoffen</td><td></td><td style="text-align:right">' + euro(r.ingr) + '</td></tr>' +
+      '</table></div>' +
+  '</div>';
+}
+
+function renderIngredienten(){
+  const box = document.getElementById('ings');
+  box.innerHTML = '';
+  for (const [key, ing] of Object.entries(ingredienten)){
+    const nu = prijsVan(key);
+    const op = nu - ing.prijs;
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML =
+      '<div class="nm">' + ing.naam + '<small>per ' + ing.eenheid + '</small></div>' +
+      '<div><input type="number" step="0.05" min="0" value="' + ing.prijs.toFixed(2) + '" data-ing="' + key + '">' +
+      (op > 0.004 ? '<div class="up">nu ' + euro(nu) + '</div>' : '') + '</div>';
+    box.appendChild(row);
+  }
+  const vasteBox = document.getElementById('vaste');
+  vasteBox.innerHTML = '';
+  for (const [key, v] of Object.entries(vast)){
+    const nu = v.waarde * loonFactor();
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML =
+      '<div class="nm">' + v.naam + '<small>' + v.eenheid + '</small></div>' +
+      '<div><input type="number" step="0.50" min="0" value="' + v.waarde.toFixed(2) + '" data-vast="' + key + '">' +
+      (nu - v.waarde > 0.004 ? '<div class="up">nu ' + euro(nu) + '</div>' : '') + '</div>';
+    vasteBox.appendChild(row);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Bediening
+// ---------------------------------------------------------------------------
+for (const k of ['bloem', 'zuivel', 'overig', 'loon']){
+  const el = document.getElementById('s-' + k);
+  el.addEventListener('input', () => {
+    stijging[k] = Number(el.value);
+    document.getElementById('v-' + k).textContent = (stijging[k] > 0 ? '+' : '') + stijging[k] + '%';
+    render();
+  });
+}
+
+document.getElementById('reset').addEventListener('click', () => {
+  for (const k of ['bloem', 'zuivel', 'overig', 'loon']){
+    stijging[k] = 0;
+    document.getElementById('s-' + k).value = 0;
+    document.getElementById('v-' + k).textContent = '+0%';
+  }
+  render();
+});
+
+document.getElementById('rows').addEventListener('click', e => {
+  const tr = e.target.closest('tr.prod');
+  if (!tr) return;
+  const i = Number(tr.dataset.i);
+  if (open.has(i)) open.delete(i); else open.add(i);
+  render();
+});
+
+document.addEventListener('change', e => {
+  const ingKey = e.target.dataset && e.target.dataset.ing;
+  const vastKey = e.target.dataset && e.target.dataset.vast;
+  const waarde = Number(e.target.value);
+  if (ingKey && waarde >= 0){ ingredienten[ingKey].prijs = waarde; maakBasis(); render(); }
+  if (vastKey && waarde >= 0){ vast[vastKey].waarde = waarde; maakBasis(); render(); }
+});
+
+function renderMarkt(){
+  const box = document.getElementById('markt');
+  if (!NOTERINGEN || !NOTERINGEN.zuivel || !NOTERINGEN.bloem){
+    box.innerHTML = '<span style="color:var(--muted)">Marktnoteringen nog niet opgehaald. ' +
+      'Draai <code style="font-size:12.5px">python3 haal-noteringen.py</code> in deze map.</span>';
+    return;
+  }
+  const chip = n =>
+    '<span class="chip"><span class="nm">' + n.naam.split(',')[0] + '</span>' +
+    '<span class="pr">&euro; ' + n.prijs.toLocaleString('nl-NL', {minimumFractionDigits:2, maximumFractionDigits:2}) +
+    ' ' + n.eenheid + '</span>' +
+    '<span class="jj ' + (n.verandering >= 0 ? 'op' : 'af') + '">' +
+    (n.verandering >= 0 ? '+' : '') + n.verandering.toFixed(1).replace('.', ',') + '% t.o.v. vorig jaar</span></span>';
+  box.innerHTML =
+    chip(NOTERINGEN.bloem) + chip(NOTERINGEN.zuivel) +
+    '<button class="btn mkt" id="naar-markt">Zet de schuiven op de markt</button>' +
+    '<span class="bron">Europese Commissie, weeknoteringen<br>opgehaald op ' +
+    new Date(NOTERINGEN.opgehaald).toLocaleDateString('nl-NL') + '</span>';
+
+  document.getElementById('naar-markt').addEventListener('click', () => {
+    const zet = (k, pct) => {
+      const v = Math.max(-50, Math.min(100, Math.round(pct / 5) * 5));
+      stijging[k] = v;
+      document.getElementById('s-' + k).value = v;
+      document.getElementById('v-' + k).textContent = (v > 0 ? '+' : '') + v + '%';
+    };
+    zet('bloem', NOTERINGEN.bloem.verandering);
+    zet('zuivel', NOTERINGEN.zuivel.verandering);
+    render();
+  });
+}
+
+maakBasis();
+render();
+renderMarkt();
+</script>
+</body>
+</html>

@@ -1,0 +1,369 @@
+{
+  "recepten": [
+    {
+      "id": "wit-800",
+      "naam": "Wit tarwebrood 800 g",
+      "groep": "Brood",
+      "meelbasis_kg": 25,
+      "percentages": {
+        "bloem-patent": 100,
+        "water": 60,
+        "gist": 2.2,
+        "zout": 1.9,
+        "margarine": 2.5,
+        "verbeteraar": 0.5
+      },
+      "garnering": {},
+      "deeggewicht_g": 920,
+      "bakverlies_pct": 12.0,
+      "arbeid_min": 45,
+      "oven_min": 55,
+      "verpakking": {
+        "zak-brood": 1
+      },
+      "verkoop_incl": 3.25,
+      "per_week": 900
+    },
+    {
+      "id": "volkoren-800",
+      "naam": "Volkorenbrood 800 g",
+      "groep": "Brood",
+      "meelbasis_kg": 25,
+      "percentages": {
+        "meel-volkoren": 100,
+        "water": 66,
+        "gist": 2.4,
+        "zout": 1.9,
+        "margarine": 2.5,
+        "verbeteraar": 0.8
+      },
+      "garnering": {},
+      "deeggewicht_g": 935,
+      "bakverlies_pct": 13.0,
+      "arbeid_min": 48,
+      "oven_min": 58,
+      "verpakking": {
+        "zak-brood": 1
+      },
+      "verkoop_incl": 3.55,
+      "per_week": 620
+    },
+    {
+      "id": "meergranen-800",
+      "naam": "Meergranenbrood met zaden 800 g",
+      "groep": "Brood",
+      "meelbasis_kg": 20,
+      "percentages": {
+        "meel-volkoren": 60,
+        "bloem-brood": 30,
+        "meel-rogge": 10,
+        "water": 68,
+        "gist": 2.4,
+        "zout": 1.9,
+        "margarine": 3.0,
+        "zonnebloempit": 8,
+        "lijnzaad": 5,
+        "sesamzaad": 3,
+        "pompoenpit": 4,
+        "zemelen": 6,
+        "verbeteraar": 0.8
+      },
+      "garnering": {
+        "zonnebloempit": 0.006,
+        "maanzaad": 0.003
+      },
+      "deeggewicht_g": 950,
+      "bakverlies_pct": 13.5,
+      "arbeid_min": 58,
+      "oven_min": 58,
+      "verpakking": {
+        "zak-brood": 1
+      },
+      "verkoop_incl": 4.25,
+      "per_week": 430
+    },
+    {
+      "id": "desem-spelt",
+      "naam": "Speltdesem vloerbrood",
+      "groep": "Brood",
+      "meelbasis_kg": 15,
+      "percentages": {
+        "meel-spelt": 80,
+        "bloem-patent": 20,
+        "water": 72,
+        "desem": 22,
+        "gist": 0.4,
+        "zout": 2.0
+      },
+      "garnering": {},
+      "deeggewicht_g": 880,
+      "bakverlies_pct": 14.0,
+      "arbeid_min": 70,
+      "oven_min": 62,
+      "verpakking": {
+        "zak-brood": 1
+      },
+      "verkoop_incl": 4.95,
+      "per_week": 240
+    },
+    {
+      "id": "rogge-vol",
+      "naam": "Fries roggebrood",
+      "groep": "Brood",
+      "meelbasis_kg": 30,
+      "percentages": {
+        "meel-rogge": 100,
+        "water": 78,
+        "zout": 1.6,
+        "desem": 10
+      },
+      "garnering": {},
+      "deeggewicht_g": 1050,
+      "bakverlies_pct": 8.0,
+      "arbeid_min": 40,
+      "oven_min": 240,
+      "verpakking": {
+        "zak-brood": 1
+      },
+      "verkoop_incl": 3.1,
+      "per_week": 180
+    },
+    {
+      "id": "kadet-maanzaad",
+      "naam": "Kadetje met maanzaad",
+      "groep": "Klein brood",
+      "meelbasis_kg": 12,
+      "percentages": {
+        "bloem-patent": 100,
+        "water": 58,
+        "gist": 3.0,
+        "zout": 1.8,
+        "margarine": 4.0,
+        "suiker": 2.0,
+        "verbeteraar": 0.6
+      },
+      "garnering": {
+        "maanzaad": 0.0025
+      },
+      "deeggewicht_g": 62,
+      "bakverlies_pct": 14.0,
+      "arbeid_min": 90,
+      "oven_min": 22,
+      "verpakking": {
+        "zak-klein": 1
+      },
+      "verkoop_incl": 0.65,
+      "per_week": 1450
+    },
+    {
+      "id": "croissant",
+      "naam": "Roomboter croissant",
+      "groep": "Viennoiserie",
+      "meelbasis_kg": 10,
+      "percentages": {
+        "bloem-patent": 100,
+        "water": 26,
+        "melk-vol": 24,
+        "gist": 4.0,
+        "zout": 1.9,
+        "suiker": 10,
+        "plaatboter": 50,
+        "ei-vloeibaar": 4
+      },
+      "garnering": {},
+      "deeggewicht_g": 72,
+      "bakverlies_pct": 16.0,
+      "arbeid_min": 240,
+      "oven_min": 35,
+      "verpakking": {
+        "zak-klein": 1
+      },
+      "verkoop_incl": 1.6,
+      "per_week": 600
+    },
+    {
+      "id": "chocobroodje",
+      "naam": "Chocoladebroodje",
+      "groep": "Viennoiserie",
+      "meelbasis_kg": 10,
+      "percentages": {
+        "bloem-patent": 100,
+        "water": 26,
+        "melk-vol": 24,
+        "gist": 4.0,
+        "zout": 1.9,
+        "suiker": 10,
+        "plaatboter": 50,
+        "ei-vloeibaar": 4,
+        "chocolade": 14
+      },
+      "garnering": {},
+      "deeggewicht_g": 80,
+      "bakverlies_pct": 15.0,
+      "arbeid_min": 250,
+      "oven_min": 35,
+      "verpakking": {
+        "zak-klein": 1
+      },
+      "verkoop_incl": 1.85,
+      "per_week": 350
+    },
+    {
+      "id": "italiaans-durum",
+      "naam": "Italiaans landbrood met durum",
+      "groep": "Brood",
+      "meelbasis_kg": 14,
+      "percentages": {
+        "bloem-patent": 65,
+        "gries-durum": 35,
+        "water": 66,
+        "gist": 1.6,
+        "zout": 2.0,
+        "desem": 12
+      },
+      "garnering": {
+        "sesamzaad": 0.004
+      },
+      "deeggewicht_g": 640,
+      "bakverlies_pct": 13.0,
+      "arbeid_min": 62,
+      "oven_min": 48,
+      "verpakking": {
+        "zak-brood": 1
+      },
+      "verkoop_incl": 3.75,
+      "per_week": 210
+    },
+    {
+      "id": "kaasbroodje",
+      "naam": "Kaasbroodje",
+      "groep": "Hartig",
+      "meelbasis_kg": 6,
+      "percentages": {
+        "bloem-patent": 100,
+        "water": 50,
+        "gist": 4.0,
+        "zout": 1.6,
+        "margarine": 10,
+        "melk-vol": 10,
+        "ei-vloeibaar": 6,
+        "kaas-belegen": 55
+      },
+      "garnering": {
+        "kaas-belegen": 0.012
+      },
+      "deeggewicht_g": 95,
+      "bakverlies_pct": 12.0,
+      "arbeid_min": 105,
+      "oven_min": 28,
+      "verpakking": {
+        "zak-klein": 1
+      },
+      "verkoop_incl": 2.15,
+      "per_week": 380
+    },
+    {
+      "id": "worstenbroodje",
+      "naam": "Worstenbroodje",
+      "groep": "Hartig",
+      "meelbasis_kg": 8,
+      "percentages": {
+        "bloem-patent": 100,
+        "water": 52,
+        "gist": 4.0,
+        "zout": 1.6,
+        "margarine": 12,
+        "melk-vol": 8,
+        "ei-vloeibaar": 5,
+        "gehakt": 95
+      },
+      "garnering": {},
+      "deeggewicht_g": 105,
+      "bakverlies_pct": 11.0,
+      "arbeid_min": 150,
+      "oven_min": 30,
+      "verpakking": {
+        "zak-klein": 1
+      },
+      "verkoop_incl": 2.35,
+      "per_week": 500
+    },
+    {
+      "id": "amandelstaaf",
+      "naam": "Roomboter amandelstaaf",
+      "groep": "Banket",
+      "meelbasis_kg": 6,
+      "percentages": {
+        "bloem-patent": 100,
+        "water": 42,
+        "zout": 1.5,
+        "roomboter": 85,
+        "spijs": 175,
+        "ei-vloeibaar": 14,
+        "amandelschaaf": 8
+      },
+      "garnering": {},
+      "deeggewicht_g": 340,
+      "bakverlies_pct": 9.0,
+      "arbeid_min": 110,
+      "oven_min": 32,
+      "verpakking": {
+        "doos-gebak": 1
+      },
+      "verkoop_incl": 5.25,
+      "per_week": 120
+    },
+    {
+      "id": "appeltaart",
+      "naam": "Hollandse appeltaart",
+      "groep": "Banket",
+      "meelbasis_kg": 4,
+      "percentages": {
+        "bloem-patent": 100,
+        "roomboter": 62,
+        "basterdsuiker": 45,
+        "ei-vloeibaar": 12,
+        "zout": 1.0,
+        "appel": 300,
+        "rozijn": 20,
+        "kaneel": 1.2,
+        "suiker": 22
+      },
+      "garnering": {},
+      "deeggewicht_g": 1580,
+      "bakverlies_pct": 7.0,
+      "arbeid_min": 150,
+      "oven_min": 65,
+      "verpakking": {
+        "doos-taart": 1
+      },
+      "verkoop_incl": 18.95,
+      "per_week": 60
+    },
+    {
+      "id": "slagroomtaart",
+      "naam": "Slagroomtaart 8 personen",
+      "groep": "Banket",
+      "meelbasis_kg": 2.4,
+      "percentages": {
+        "bloem-patent": 100,
+        "ei-vloeibaar": 175,
+        "suiker": 110,
+        "slagroom": 320,
+        "appel": 90
+      },
+      "garnering": {
+        "amandelschaaf": 0.02
+      },
+      "deeggewicht_g": 1650,
+      "bakverlies_pct": 6.0,
+      "arbeid_min": 165,
+      "oven_min": 30,
+      "verpakking": {
+        "doos-taart": 1
+      },
+      "verkoop_incl": 22.5,
+      "per_week": 45
+    }
+  ]
+}

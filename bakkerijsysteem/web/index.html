@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bakkerijsysteem</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --paper:#F4F7FB; --card:#FFFFFF; --ink:#0A1A2E; --muted:#5A6B82; --zacht:#8496AC;
+    --blauw:#0C4DA2; --blauw-zacht:#E8F0FB; --oranje:#F28E1C; --oranje-zacht:#FFF3E4;
+    --lijn:#DCE4EE; --lijn-licht:#EDF1F7;
+    --goed:#1E7A46; --goed-zacht:#E7F5EE;
+    --letop:#B45309; --letop-zacht:#FFF4E0;
+    --verlies:#B3261E; --verlies-zacht:#FDECEA;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+       font-family:Inter,-apple-system,"Segoe UI",Arial,sans-serif;font-size:14.5px;line-height:1.5}
+  h1,h2,h3{font-family:Montserrat,Inter,sans-serif;margin:0}
+  .num{font-variant-numeric:tabular-nums}
+
+  header.kop{background:var(--ink);color:#fff;padding:18px 0 0}
+  .wrap{max-width:1420px;margin:0 auto;padding:0 24px}
+  .titelrij{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+  .merk{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--oranje)}
+  header.kop h1{font-size:24px;font-weight:800;letter-spacing:-.01em}
+  header.kop .bij{color:#93A8C4;font-size:13px;margin-left:auto}
+  nav.tabs{display:flex;gap:4px;margin-top:16px}
+  nav.tabs button{
+    background:none;border:none;border-bottom:3px solid transparent;color:#93A8C4;
+    font:inherit;font-weight:600;font-size:14px;padding:10px 16px 12px;cursor:pointer;
+  }
+  nav.tabs button:hover{color:#fff}
+  nav.tabs button[aria-selected="true"]{color:#fff;border-bottom-color:var(--oranje)}
+
+  main{padding:24px 0 90px}
+  .melding{background:var(--oranje-zacht);border:1px solid #F3D7AE;border-left:5px solid var(--oranje);
+           border-radius:10px;padding:12px 18px;margin-bottom:20px;font-size:13.5px}
+  .melding b{color:#8A4E06}
+
+  .kaart{background:var(--card);border:1px solid var(--lijn);border-radius:14px;padding:20px 22px;margin-bottom:20px}
+  .kaart > h2{font-size:17px;margin-bottom:3px}
+  .kaart > .sub{font-size:13px;color:var(--muted);margin:0 0 16px}
+
+  .cijfers{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:20px}
+  .cijfer{background:var(--card);border:1px solid var(--lijn);border-radius:12px;padding:16px 18px}
+  .cijfer .lbl{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--zacht)}
+  .cijfer .gr{font-family:Montserrat,sans-serif;font-weight:800;font-size:26px;margin-top:7px;letter-spacing:-.01em}
+  .cijfer .bij{font-size:12px;color:var(--muted);margin-top:4px}
+  .cijfer.op .gr{color:var(--verlies)} .cijfer.af .gr{color:var(--goed)}
+
+  .schuiven{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px 20px}
+  .schuif label{display:flex;justify-content:space-between;font-size:12.5px;font-weight:600;margin-bottom:5px}
+  .schuif label .w{color:var(--blauw)}
+  input[type=range]{width:100%;accent-color:var(--blauw)}
+  .knoppen{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:18px;
+           padding-top:15px;border-top:1px solid var(--lijn)}
+  .knop{border:1px solid var(--lijn);background:#fff;color:var(--ink);font:inherit;font-weight:600;
+        font-size:13px;padding:9px 15px;border-radius:9px;cursor:pointer;display:inline-block;
+        text-decoration:none;line-height:1.3}
+  .knop:hover{border-color:var(--blauw);color:var(--blauw)}
+  .knop.vol{background:var(--blauw);border-color:var(--blauw);color:#fff}
+  .knop.vol:hover{background:#0A4189;color:#fff}
+  .knop:disabled{opacity:.5;cursor:progress}
+  .knoppen .uitleg{font-size:12.5px;color:var(--muted);margin-left:auto;text-align:right;max-width:46ch}
+
+  table{width:100%;border-collapse:collapse}
+  th{text-align:right;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--zacht);
+     font-weight:700;padding:0 9px 9px;border-bottom:1px solid var(--lijn);white-space:nowrap}
+  th:first-child{text-align:left}
+  td{padding:10px 9px;border-bottom:1px solid var(--lijn-licht);text-align:right;vertical-align:top}
+  td:first-child{text-align:left}
+  tr.klik{cursor:pointer}
+  tr.klik:hover td{background:#F7FAFE}
+  .nm{font-weight:600}
+  .meta{display:block;font-size:11.5px;color:var(--zacht);font-weight:400;margin-top:2px}
+  .pil{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
+  .pil.goed{background:var(--goed-zacht);color:var(--goed)}
+  .pil.let-op{background:var(--letop-zacht);color:var(--letop)}
+  .pil.verlies{background:var(--verlies-zacht);color:var(--verlies)}
+  .delta{font-size:11.5px;font-weight:600;display:block;margin-top:3px}
+  .delta.op{color:var(--verlies)} .delta.af{color:var(--goed)} .delta.nul{color:var(--zacht);font-weight:400}
+  .balk{height:7px;border-radius:4px;background:var(--lijn-licht);overflow:hidden;min-width:64px}
+  .balk > i{display:block;height:100%;border-radius:4px}
+
+  tr.detail td{background:#F7FAFE;padding:0}
+  .detailbak{padding:18px 16px 20px;display:grid;grid-template-columns:1.25fr 1fr;gap:26px}
+  .detailbak h3{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--zacht);margin-bottom:10px}
+  .mini{width:100%;font-size:12.5px;border-collapse:collapse}
+  .mini td{padding:4px 6px;border-bottom:1px dotted #DCE4EE;text-align:right}
+  .mini td:first-child{text-align:left}
+  .mini tr:last-child td{border-bottom:none;font-weight:700}
+  .stapel{display:flex;height:24px;border-radius:6px;overflow:hidden;margin-bottom:9px}
+  .legenda{display:flex;gap:13px;flex-wrap:wrap;font-size:11.5px;color:var(--muted)}
+  .legenda i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px}
+  .feiten{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:12.5px;margin-top:12px}
+  .feiten dt{color:var(--zacht)} .feiten dd{margin:0;font-weight:600}
+
+  .laagjes{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
+  .laagje{font-size:11px;border:1px solid var(--lijn);border-radius:6px;padding:2px 7px;background:#fff;color:var(--muted)}
+  .laagje.oud{border-color:#F3D7AE;background:var(--oranje-zacht);color:#8A4E06}
+
+  .groepkop td{background:var(--paper);font-size:11px;font-weight:700;letter-spacing:.08em;
+               text-transform:uppercase;color:var(--zacht);padding:14px 9px 7px;border-bottom:1px solid var(--lijn)}
+
+  .noteringen{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+  .notering{background:var(--card);border:1px solid var(--lijn);border-radius:12px;padding:16px 18px}
+  .notering .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .notering .naam{font-family:Montserrat,sans-serif;font-weight:700;font-size:15px}
+  .notering .waarde{font-family:Montserrat,sans-serif;font-weight:800;font-size:21px;margin-top:8px}
+  .notering .jj{font-size:13px;font-weight:700}
+  .notering .jj.op{color:var(--verlies)} .notering .jj.af{color:var(--goed)}
+  .notering .bron{font-size:11.5px;color:var(--zacht);margin-top:8px;line-height:1.4}
+  .notering svg{display:block;margin-top:10px;width:100%;height:44px}
+
+  .formulier{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end}
+  .formulier label{display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:600;color:var(--muted)}
+  .formulier input,.formulier select{
+    font:inherit;font-size:13.5px;border:1px solid var(--lijn);border-radius:8px;padding:8px 10px;
+    background:#fff;color:var(--ink);min-width:130px;
+  }
+  .formulier input:focus,.formulier select:focus{outline:2px solid var(--blauw-zacht);border-color:var(--blauw)}
+  .formulier button{align-self:flex-end}
+  .uitslag{font-size:13px;margin:14px 0 0;min-height:1em}
+  .uitslag.goed{color:var(--goed)} .uitslag.fout{color:var(--verlies)}
+  .sjablonen{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px}
+  .sjabloon{border:1px solid var(--lijn);border-radius:12px;padding:16px 18px;background:#fff;
+            display:flex;flex-direction:column;gap:10px}
+  .sjabloon h3{font-family:Montserrat,sans-serif;font-size:15.5px}
+  .sjabloon .wat{font-size:13px;color:var(--muted);line-height:1.45;flex:1}
+  .sjabloon .kolommen{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:var(--zacht);
+                      background:var(--paper);border-radius:7px;padding:7px 9px;line-height:1.5;
+                      overflow-x:auto;white-space:nowrap}
+  .sjabloon .rij{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+  .sjabloon .rij label.knop{margin:0}
+  label.knop input{display:none}
+  .sjabloon .verslag{font-size:12.5px;line-height:1.5;margin:0}
+  .sjabloon .verslag.goed{color:var(--goed)}
+  .sjabloon .verslag.fout{color:var(--verlies)}
+  .sjabloon .verslag.deels{color:var(--letop)}
+  .sjabloon .verslag.deels ul{color:var(--letop)}
+  .sjabloon .verslag ul{margin:6px 0 0;padding-left:18px;color:var(--verlies)}
+  .leeg{color:var(--muted);font-size:13.5px;padding:14px 0}
+  .verborgen{display:none}
+  .wacht{opacity:.45;transition:opacity .12s}
+</style>
+</head>
+<body>
+
+<header class="kop">
+  <div class="wrap">
+    <div class="titelrij">
+      <span class="merk">Bakkerij</span>
+      <h1>Wat kost je brood, en wat doet de markt ermee</h1>
+      <span class="bij" id="bijgewerkt"></span>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="marge" aria-selected="true">Marge per product</button>
+      <button role="tab" data-tab="voorraad" aria-selected="false">Voorraad en FIFO</button>
+      <button role="tab" data-tab="recepten" aria-selected="false">Recepten</button>
+      <button role="tab" data-tab="markt" aria-selected="false">Marktnoteringen</button>
+      <button role="tab" data-tab="eigen" aria-selected="false">Je eigen cijfers</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="melding">
+    <b>Dit zijn voorbeeldcijfers.</b>
+    De recepten, inkoopprijzen en voorraadlagen staan in de map <code>data/</code>. Zet je eigen
+    receptuur en je eigen facturen erin, dan pas gaat de uitkomst over jouw bakkerij.
+  </div>
+
+  <!-- ============================ MARGE ============================ -->
+  <section id="tab-marge">
+    <div class="cijfers" id="kerncijfers"></div>
+
+    <div class="kaart">
+      <h2>Wat als de inkoop beweegt</h2>
+      <p class="sub">Schuif per grondstofgroep, of laat de markt het invullen met wat er het afgelopen jaar echt gebeurde.</p>
+      <div class="schuiven" id="schuiven"></div>
+      <div class="knoppen">
+        <button class="knop vol" id="knop-markt">Zet op de markt van het afgelopen jaar</button>
+        <button class="knop" id="knop-nul">Alles terug op nul</button>
+        <span class="uitleg" id="schuif-uitleg"></span>
+      </div>
+    </div>
+
+    <div class="kaart">
+      <h2>Marge per product</h2>
+      <p class="sub">Slechtste marge bovenaan. Klik op een regel voor de opbouw van de kostprijs en de partijen waar je nu uit bakt.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Stuks per batch</th>
+            <th>Kostprijs</th>
+            <th>Verkoop excl.</th>
+            <th>Marge</th>
+            <th>Marge nu</th>
+            <th>In scenario</th>
+            <th>Nodige prijs</th>
+            <th style="width:120px">Per week</th>
+          </tr>
+        </thead>
+        <tbody id="producten"></tbody>
+      </table>
+      <p class="sub" style="margin:14px 0 0">
+        Marge is de brutomarge na grondstoffen, directe arbeid, oven en verpakking, gerekend over de
+        verkoopprijs exclusief 9% btw. Groen vanaf 65%, oranje tussen 55% en 65%, rood daaronder.
+        Winkelkosten, bezorging en overhead zitten er niet in.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================ VOORRAAD ============================ -->
+  <section id="tab-voorraad" class="verborgen">
+    <div class="kaart">
+      <h2>Levering boeken</h2>
+      <p class="sub">Nieuwe zak bloem binnen? Boek hem hier. Hij komt achteraan in de rij en de laatst bekende inkoopprijs schuift mee.</p>
+      <form class="formulier" id="form-inkoop">
+        <label>Grondstof<select name="grondstof" required id="keuze-grondstof"></select></label>
+        <label>Datum<input type="date" name="datum" required></label>
+        <label>Aantal<input type="number" name="aantal" step="0.1" min="0.1" required placeholder="1000"></label>
+        <label>Prijs per 100<input type="number" name="prijs_per_100" step="0.01" min="0" required placeholder="48,50"></label>
+        <label>Partijnummer<input type="text" name="batch" placeholder="optioneel"></label>
+        <button class="knop vol" type="submit">Boeken</button>
+      </form>
+      <p class="uitslag" id="uitslag-inkoop"></p>
+    </div>
+
+    <div class="kaart">
+      <h2>Voorraad, oudste partij eerst</h2>
+      <p class="sub">
+        Je bakt uit de oudste partij. Zolang die duurt reken je met een oude prijs, ook als de markt
+        allang is doorgelopen. De kolom rechts laat zien hoelang dat nog goed gaat.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Grondstof</th>
+            <th>Voorraad</th>
+            <th>Per week</th>
+            <th>Dekking</th>
+            <th>FIFO-prijs</th>
+            <th>Vandaag bijkopen</th>
+            <th>Verschil</th>
+            <th>Waar je nu uit bakt</th>
+          </tr>
+        </thead>
+        <tbody id="voorraad"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============================ RECEPTEN ============================ -->
+  <section id="tab-recepten" class="verborgen">
+    <div class="kaart">
+      <h2>Productie boeken</h2>
+      <p class="sub">Gebakken vandaag? Boek de batches af. Het systeem haalt de grondstoffen uit de oudste partij en rekent af wat die partij kostte.</p>
+      <form class="formulier" id="form-productie">
+        <label>Recept<select name="recept" required id="keuze-recept"></select></label>
+        <label>Aantal batches<input type="number" name="batches" step="0.5" min="0.5" value="1" required></label>
+        <button class="knop vol" type="submit">Afboeken</button>
+      </form>
+      <p class="uitslag" id="uitslag-productie"></p>
+    </div>
+
+    <div class="kaart">
+      <h2>Receptuur op bakkerspercentage</h2>
+      <p class="sub">Alles ten opzichte van het meel, zoals in de bakkerij. Klik een recept open voor de volledige samenstelling.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Recept</th>
+            <th>Meelbasis</th>
+            <th>Deeg</th>
+            <th>Deeggewicht</th>
+            <th>Bakverlies</th>
+            <th>Uit de oven</th>
+            <th>Stuks</th>
+            <th>Arbeid</th>
+            <th>Oven</th>
+            <th>Kostprijs</th>
+          </tr>
+        </thead>
+        <tbody id="recepten"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============================ MARKT ============================ -->
+  <section id="tab-markt" class="verborgen">
+    <div class="kaart">
+      <h2>Marktnoteringen</h2>
+      <p class="sub">
+        Weeknoteringen uit de open data van de Europese Commissie. Gratis, zonder abonnement.
+        De koppeling naar jouw inkoopprijs staat per grondstof in <code>data/grondstoffen.json</code>.
+      </p>
+      <div class="knoppen" style="margin:0 0 18px;padding:0;border:none">
+        <button class="knop vol" id="knop-ververs">Noteringen nu ophalen</button>
+        <span class="uitleg" id="markt-uitleg">Dit is het enige moment waarop dit systeem het internet op gaat.</span>
+      </div>
+      <div class="noteringen" id="noteringen"></div>
+      <p class="sub" style="margin:18px 0 0">
+        Voor eieren, zaden, noten, spijs en chocolade bestaat geen Europese notering. Die grondstoffen
+        staan zonder koppeling in het systeem, je werkt ze bij met je eigen inkoopfactuur.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================ EIGEN CIJFERS ============================ -->
+  <section id="tab-eigen" class="verborgen">
+    <div class="kaart">
+      <h2>Je eigen recepten en prijzen erin</h2>
+      <p class="sub">
+        Vier lijsten, in Excel te openen. Download er een, hij is al gevuld met wat er nu in het
+        systeem staat. Vervang de regels door die van jou, sla op als csv, en zet hem hier terug.
+        Er gaat altijd eerst een kopie van je oude gegevens naar <code>data/kopieen/</code>,
+        dus je kunt nooit iets kwijtraken.
+      </p>
+      <div class="sjablonen" id="sjablonen"></div>
+      <p class="sub" style="margin:20px 0 0">
+        Werkt je Excel met puntkomma's of met komma's? Allebei goed, het systeem herkent het zelf.
+        Een prijs mag je schrijven als 48,50 of als 48.50.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+// ---------------------------------------------------------------------------
+// Hulpjes
+// ---------------------------------------------------------------------------
+const euro  = n => "€ " + Number(n).toLocaleString("nl-NL", {minimumFractionDigits:2, maximumFractionDigits:2});
+const euro0 = n => "€ " + Math.round(n).toLocaleString("nl-NL");
+const pct   = (n, cijfers = 1) => (n > 0 ? "+" : "") + Number(n).toFixed(cijfers).replace(".", ",") + "%";
+const getal = (n, c = 1) => Number(n).toLocaleString("nl-NL", {minimumFractionDigits:c, maximumFractionDigits:c});
+const el    = id => document.getElementById(id);
+const kleurVan = k => k === "goed" ? "#1E7A46" : k === "let-op" ? "#F28E1C" : "#B3261E";
+const datumNL = s => new Date(s).toLocaleDateString("nl-NL", {day:"numeric", month:"short", year:"numeric"});
+
+let staat = {schuiven:{}, data:null, open:new Set(), openRecept:new Set()};
+
+async function haal(adres, opties) {
+  const r = await fetch(adres, opties);
+  if (!r.ok) throw new Error("Server gaf " + r.status);
+  return r.json();
+}
+
+// ---------------------------------------------------------------------------
+// Ophalen en tekenen
+// ---------------------------------------------------------------------------
+async function verversAlles() {
+  document.querySelector("main").classList.add("wacht");
+  const vraag = "/api/overzicht?schuiven=" + encodeURIComponent(JSON.stringify(staat.schuiven));
+  staat.data = await haal(vraag);
+  document.querySelector("main").classList.remove("wacht");
+  el("bijgewerkt").textContent = "bijgewerkt " + new Date(staat.data.bijgewerkt).toLocaleTimeString("nl-NL");
+  tekenKerncijfers();
+  tekenSchuiven();
+  tekenProducten();
+  tekenVoorraad();
+  tekenRecepten();
+  tekenNoteringen();
+  vulKeuzelijsten();
+}
+
+function tekenKerncijfers() {
+  const t = staat.data.totalen;
+  const verschil = t.week_verschil;
+  const richting = verschil < -0.5 ? "op" : verschil > 0.5 ? "af" : "";
+  el("kerncijfers").innerHTML = `
+    <div class="cijfer"><div class="lbl">Weekomzet</div><div class="gr num">${euro0(t.week_omzet)}</div>
+      <div class="bij">exclusief btw</div></div>
+    <div class="cijfer"><div class="lbl">Brutomarge per week</div><div class="gr num">${euro0(t.week_marge_nu)}</div>
+      <div class="bij">uit je eigen voorraad, oudste partij eerst</div></div>
+    <div class="cijfer ${richting}"><div class="lbl">In het scenario</div>
+      <div class="gr num">${euro0(t.week_marge_scenario)}</div>
+      <div class="bij">${verschil === 0 ? "geen schuiven aan" : (verschil < 0 ? "dat is " : "dat is ") + euro0(Math.abs(verschil)) + (verschil < 0 ? " minder" : " meer") + " per week"}</div></div>
+    <div class="cijfer ${richting}"><div class="lbl">Op jaarbasis</div>
+      <div class="gr num">${verschil === 0 ? "€ 0" : (t.jaar_verschil > 0 ? "+" : "") + euro0(t.jaar_verschil)}</div>
+      <div class="bij">bij dezelfde verkoopaantallen</div></div>
+    <div class="cijfer"><div class="lbl">Voorraadwaarde</div><div class="gr num">${euro0(t.voorraadwaarde)}</div>
+      <div class="bij">tegen inkoopprijs, ${staat.data.voorraad.length} grondstoffen</div></div>
+    <div class="cijfer ${t.producten_rood_scenario > t.producten_rood_nu ? "op" : ""}">
+      <div class="lbl">Producten in het rood</div>
+      <div class="gr num">${t.producten_rood_nu}${t.producten_rood_scenario !== t.producten_rood_nu ? " → " + t.producten_rood_scenario : ""}</div>
+      <div class="bij">marge onder 55 procent</div></div>`;
+}
+
+function tekenSchuiven() {
+  const bak = el("schuiven");
+  if (bak.dataset.klaar) { synchroniseerSchuiven(); return; }
+  bak.innerHTML = staat.data.groepen.map(groep => `
+    <div class="schuif">
+      <label for="s-${groep}">${groep} <span class="w num" id="w-${groep}">+0%</span></label>
+      <input type="range" id="s-${groep}" data-groep="${groep}" min="-50" max="100" step="0.5" value="0">
+    </div>`).join("");
+  bak.querySelectorAll("input[type=range]").forEach(schuif => {
+    schuif.addEventListener("input", () => {
+      const groep = schuif.dataset.groep;
+      staat.schuiven[groep] = Number(schuif.value);
+      el("w-" + groep).textContent = pct(Number(schuif.value), 1);
+      wachtEnVerversScenario();
+    });
+  });
+  bak.dataset.klaar = "1";
+  synchroniseerSchuiven();
+}
+
+function synchroniseerSchuiven() {
+  for (const groep of staat.data.groepen) {
+    const waarde = staat.schuiven[groep] || 0;
+    const schuif = el("s-" + groep);
+    if (schuif) { schuif.value = waarde; el("w-" + groep).textContent = pct(waarde, 1); }
+  }
+  const aan = Object.entries(staat.schuiven).filter(([, v]) => v);
+  el("schuif-uitleg").textContent = aan.length
+    ? aan.map(([g, v]) => g.toLowerCase() + " " + pct(v, 1)).join(", ")
+    : "Nog niets aangezet. De tabel hieronder toont je situatie van vandaag.";
+}
+
+let wachtdraadje = null;
+function wachtEnVerversScenario() {
+  clearTimeout(wachtdraadje);
+  wachtdraadje = setTimeout(verversAlles, 220);
+}
+
+function tekenProducten() {
+  const rijen = [];
+  for (const p of staat.data.producten) {
+    const sc = p.scenario;
+    const veranderd = Math.abs(sc.verschil_marge_pnt) > 0.05;
+    rijen.push(`
+      <tr class="klik" data-recept="${p.id}">
+        <td><span class="nm">${p.naam}</span><span class="meta">${p.groep} · ${p.per_week.toLocaleString("nl-NL")} per week · ${p.eindgewicht_g} g uit de oven</span></td>
+        <td class="num">${p.stuks_per_batch}<span class="meta">${getal(p.deeg_kg, 1)} kg deeg</span></td>
+        <td class="num">${euro(p.kostprijs)}${veranderd ? `<span class="delta ${sc.verschil_kostprijs > 0 ? "op" : "af"}">${sc.verschil_kostprijs > 0 ? "+" : "−"}${euro(Math.abs(sc.verschil_kostprijs)).replace("€ ", "€ ")}</span>` : ""}</td>
+        <td class="num">${euro(p.verkoop_excl)}<span class="meta">${euro(p.verkoop_incl)} incl.</span></td>
+        <td class="num">${euro(p.marge)}</td>
+        <td><span class="pil ${p.kleur}">${getal(p.marge_pct, 1)}%</span></td>
+        <td>${veranderd ? `<span class="pil ${sc.kleur}">${getal(sc.marge_pct, 1)}%</span><span class="delta ${sc.verschil_marge_pnt < 0 ? "op" : "af"}">${pct(sc.verschil_marge_pnt)} punt</span>` : `<span class="delta nul">gelijk</span>`}</td>
+        <td class="num">${veranderd && sc.verschil_marge_pnt < 0 && sc.nodige_verkoopprijs
+            ? euro(sc.nodige_verkoopprijs) + `<span class="meta">nu ${euro(p.verkoop_incl)}</span>`
+            : "<span class='delta nul'>niet nodig</span>"}</td>
+        <td><div class="balk"><i style="width:${Math.max(2, Math.min(100, p.marge_pct))}%;background:${kleurVan(p.kleur)}"></i></div>
+            <span class="delta nul num">${euro0(p.week_marge)}</span></td>
+      </tr>`);
+    if (staat.open.has(p.id)) rijen.push(`<tr class="detail"><td colspan="9">${detailHtml(p)}</td></tr>`);
+  }
+  el("producten").innerHTML = rijen.join("");
+  el("producten").querySelectorAll("tr.klik").forEach(rij => {
+    rij.addEventListener("click", () => {
+      const id = rij.dataset.recept;
+      staat.open.has(id) ? staat.open.delete(id) : staat.open.add(id);
+      tekenProducten();
+    });
+  });
+}
+
+function detailHtml(p) {
+  const kleuren = ["#0C4DA2", "#3E82DE", "#F28E1C", "#8496AC", "#B9C7D8"];
+  const delen = [
+    ["Grondstoffen", p.grondstoffen], ["Garnering", p.garnering],
+    ["Arbeid", p.arbeid], ["Oven", p.oven], ["Verpakking", p.verpakking],
+  ].filter(d => d[1] > 0.0001);
+  const stapel = delen.map((d, i) => `<span style="width:${d[1] / p.kostprijs * 100}%;background:${kleuren[i]}"></span>`).join("");
+  const legenda = delen.map((d, i) => `<span><i style="background:${kleuren[i]}"></i>${d[0]} ${euro(d[1])}</span>`).join("");
+
+  const regels = p.regels.slice().sort((a, b) => b.kosten - a.kosten).map(r => {
+    const lagen = (r.lagen || []).map(l => {
+      const oud = (r.lagen.length > 1 && l === r.lagen[0]);
+      return `<span class="laagje ${oud ? "oud" : ""}">${datumNL(l.datum)} · ${euro(l.prijs_per_100)}</span>`;
+    }).join("");
+    return `<tr>
+      <td>${r.naam}${lagen ? `<div class="laagjes">${lagen}</div>` : ""}</td>
+      <td class="num">${r.percentage !== null ? getal(r.percentage, 1) + "%" : "–"}</td>
+      <td class="num">${getal(r.hoeveelheid, 3)} ${r.eenheid}</td>
+      <td class="num">${euro(r.per_stuk)}</td></tr>`;
+  }).join("");
+
+  return `<div class="detailbak">
+    <div>
+      <h3>Recept per batch van ${p.stuks_per_batch} stuks</h3>
+      <table class="mini">
+        <tr><td style="color:var(--zacht)">Grondstof</td><td style="text-align:right;color:var(--zacht)">bakkers%</td>
+            <td style="text-align:right;color:var(--zacht)">per batch</td><td style="text-align:right;color:var(--zacht)">per stuk</td></tr>
+        ${regels}
+        <tr><td>Kostprijs per stuk</td><td></td><td></td><td class="num">${euro(p.kostprijs)}</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Waar de kostprijs in zit</h3>
+      <div class="stapel">${stapel}</div>
+      <div class="legenda">${legenda}</div>
+      <dl class="feiten">
+        <dt>Meelbasis</dt><dd>${getal(p.meelbasis_kg, 1)} kg</dd>
+        <dt>Totaal bakkerspercentage</dt><dd>${getal(p.totaal_percentage, 1)}%</dd>
+        <dt>Deeggewicht</dt><dd>${p.deeggewicht_g} g per stuk</dd>
+        <dt>Bakverlies</dt><dd>${getal(p.bakverlies_pct, 1)}%, uit de oven ${p.eindgewicht_g} g</dd>
+        <dt>Arbeid en oven</dt><dd>${p.arbeid_min} min werk, ${p.oven_min} min oven</dd>
+        <dt>Vandaag bijkopen</dt><dd>${euro(p.vervanging.kostprijs)} (${pct(p.vervanging.verschil_marge_pnt)} punt marge)</dd>
+      </dl>
+      ${p.tekorten.length ? `<p style="color:var(--verlies);font-size:12.5px;margin-top:10px">
+        Let op: te weinig voorraad voor een hele batch (${p.tekorten.map(t => t.grondstof).join(", ")}). Het tekort is gerekend tegen de laatste inkoopprijs.</p>` : ""}
+    </div>
+  </div>`;
+}
+
+function vulKeuzelijsten() {
+  const gs = el("keuze-grondstof");
+  if (gs && !gs.options.length) {
+    gs.innerHTML = staat.data.voorraad.slice()
+      .sort((a, b) => a.groep.localeCompare(b.groep) || a.naam.localeCompare(b.naam))
+      .map(v => `<option value="${v.id}">${v.naam} (per 100 ${v.eenheid})</option>`).join("");
+  }
+  const rs = el("keuze-recept");
+  if (rs && !rs.options.length) {
+    rs.innerHTML = staat.data.producten.slice()
+      .sort((a, b) => a.naam.localeCompare(b.naam))
+      .map(p => `<option value="${p.id}">${p.naam}</option>`).join("");
+  }
+  const datum = document.querySelector("#form-inkoop input[name=datum]");
+  if (datum && !datum.value) datum.value = new Date().toISOString().slice(0, 10);
+}
+
+function tekenVoorraad() {
+  const perGroep = {};
+  for (const v of staat.data.voorraad) (perGroep[v.groep] = perGroep[v.groep] || []).push(v);
+  const rijen = [];
+  for (const groep of Object.keys(perGroep)) {
+    rijen.push(`<tr class="groepkop"><td colspan="8">${groep}</td></tr>`);
+    for (const v of perGroep[groep]) {
+      const heeftVerschil = v.verschil_pct !== null && Math.abs(v.verschil_pct) > 0.05;
+      const oud = v.oudste_laag;
+      rijen.push(`<tr>
+        <td><span class="nm">${v.naam}</span><span class="meta">${v.leverancier || ""}${v.markt ? " · volgt " + v.markt.notering.toLowerCase() + " voor " + Math.round(v.markt.doorwerking * 100) + "%" : " · geen marktnotering"}</span></td>
+        <td class="num">${getal(v.voorraad, 0)} ${v.eenheid}</td>
+        <td class="num">${v.per_week > 0 ? getal(v.per_week, 1) + " " + v.eenheid : "<span class='delta nul'>niet in gebruik</span>"}</td>
+        <td class="num">${v.weken_dekking !== null ? getal(v.weken_dekking, 1) + " wk" : "–"}</td>
+        <td class="num">${euro(v.fifo_per_100)}<span class="meta">${v.lagen} partij${v.lagen === 1 ? "" : "en"}</span></td>
+        <td class="num">${euro(v.vervanging_per_100)}</td>
+        <td class="num">${heeftVerschil ? `<span class="pil ${v.verschil_pct > 0 ? "verlies" : "goed"}">${pct(v.verschil_pct)}</span>` : "<span class='delta nul'>gelijk</span>"}</td>
+        <td>${oud ? `<span class="laagje oud">${datumNL(oud.datum)} · ${euro(oud.prijs_per_100)} · nog ${getal(oud.restant, 0)} ${v.eenheid}</span>
+             ${oud.weken !== null ? `<span class="meta">deze partij is over ${getal(oud.weken, 1)} weken op</span>` : ""}` : "<span class='delta nul'>geen voorraad</span>"}</td>
+      </tr>`);
+    }
+  }
+  el("voorraad").innerHTML = rijen.join("");
+}
+
+function tekenRecepten() {
+  const rijen = [];
+  for (const p of staat.data.producten.slice().sort((a, b) => a.groep.localeCompare(b.groep) || a.naam.localeCompare(b.naam))) {
+    rijen.push(`<tr class="klik" data-recept="${p.id}">
+      <td><span class="nm">${p.naam}</span><span class="meta">${p.groep}</span></td>
+      <td class="num">${getal(p.meelbasis_kg, 1)} kg</td>
+      <td class="num">${getal(p.deeg_kg, 1)} kg<span class="meta">${getal(p.totaal_percentage, 0)}% totaal</span></td>
+      <td class="num">${p.deeggewicht_g} g</td>
+      <td class="num">${getal(p.bakverlies_pct, 1)}%</td>
+      <td class="num">${p.eindgewicht_g} g</td>
+      <td class="num">${p.stuks_per_batch}</td>
+      <td class="num">${p.arbeid_min} min</td>
+      <td class="num">${p.oven_min} min</td>
+      <td class="num">${euro(p.kostprijs)}</td>
+    </tr>`);
+    if (staat.openRecept.has(p.id)) rijen.push(`<tr class="detail"><td colspan="10">${detailHtml(p)}</td></tr>`);
+  }
+  el("recepten").innerHTML = rijen.join("");
+  el("recepten").querySelectorAll("tr.klik").forEach(rij => {
+    rij.addEventListener("click", () => {
+      const id = rij.dataset.recept;
+      staat.openRecept.has(id) ? staat.openRecept.delete(id) : staat.openRecept.add(id);
+      tekenRecepten();
+    });
+  });
+}
+
+function lijntje(reeks) {
+  if (!reeks || reeks.length < 3) return "";
+  const punten = reeks.slice(-104).map(r => r[1]);
+  const laag = Math.min(...punten), hoog = Math.max(...punten);
+  const breedte = 260, hoogte = 44, marge = 4;
+  const x = i => (i / (punten.length - 1)) * breedte;
+  const y = w => hoog === laag ? hoogte / 2 : marge + (1 - (w - laag) / (hoog - laag)) * (hoogte - 2 * marge);
+  const d = punten.map((w, i) => (i ? "L" : "M") + x(i).toFixed(1) + " " + y(w).toFixed(1)).join(" ");
+  const vlak = d + ` L${breedte} ${hoogte} L0 ${hoogte} Z`;
+  return `<svg viewBox="0 0 ${breedte} ${hoogte}" preserveAspectRatio="none" aria-hidden="true">
+    <path d="${vlak}" fill="#E8F0FB"></path>
+    <path d="${d}" fill="none" stroke="#0C4DA2" stroke-width="1.6" stroke-linejoin="round"></path>
+    <circle cx="${breedte}" cy="${y(punten[punten.length - 1])}" r="2.6" fill="#F28E1C"></circle>
+  </svg>`;
+}
+
+function tekenNoteringen() {
+  const n = (staat.data.noteringen || {}).noteringen || {};
+  const lijst = Object.values(n);
+  if (!lijst.length) {
+    el("noteringen").innerHTML = `<p class="leeg">Nog geen noteringen opgehaald. Druk op de knop hierboven.</p>`;
+    return;
+  }
+  el("noteringen").innerHTML = lijst.map(x => `
+    <div class="notering">
+      <div class="top">
+        <span class="naam">${x.naam}</span>
+        <span class="jj ${x.verandering_jaar >= 0 ? "op" : "af"}">${pct(x.verandering_jaar)}</span>
+      </div>
+      <div class="waarde num">${euro(x.waarde)} <span style="font-size:13px;font-weight:600;color:var(--muted)">per ${x.eenheid}</span></div>
+      ${lijntje(x.reeks)}
+      <div class="bron">${x.bron}<br>laatste notering ${datumNL(x.datum)}, een jaar eerder ${euro(x.vorig_jaar)}</div>
+    </div>`).join("");
+}
+
+// ---------------------------------------------------------------------------
+// Bediening
+// ---------------------------------------------------------------------------
+async function tekenSjablonen() {
+  const bak = el("sjablonen");
+  if (bak.dataset.klaar) return;
+  const uit = await haal("/api/sjablonen");
+  bak.innerHTML = uit.sjablonen.map(s => `
+    <div class="sjabloon" data-soort="${s.soort}">
+      <h3>${s.titel}</h3>
+      <p class="wat">${s.uitleg}</p>
+      <div class="kolommen">${s.kolommen.join(" · ")}</div>
+      <div class="rij">
+        <a class="knop" href="/api/sjabloon/${s.soort}" download>Sjabloon downloaden</a>
+        <label class="knop">Ingevuld bestand kiezen<input type="file" accept=".csv,text/csv"></label>
+      </div>
+      <p class="verslag"></p>
+    </div>`).join("");
+
+  bak.querySelectorAll("input[type=file]").forEach(veld => {
+    veld.addEventListener("change", async () => {
+      const blok = veld.closest(".sjabloon");
+      const soort = blok.dataset.soort;
+      const verslag = blok.querySelector(".verslag");
+      const bestand = veld.files[0];
+      if (!bestand) return;
+      verslag.className = "verslag";
+      verslag.textContent = "Bezig met inlezen van " + bestand.name + "...";
+      try {
+        const tekst = await bestand.text();
+        const uit = await haal("/api/import/" + soort, {
+          method: "POST", headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({csv: tekst}),
+        });
+        if (uit.fout) {
+          verslag.className = "verslag fout";
+          verslag.innerHTML = uit.fout + lijstje(uit.overgeslagen);
+        } else {
+          const problemen = uit.overgeslagen || [];
+          verslag.className = "verslag " + (!problemen.length ? "goed" : (uit.verwerkt ? "deels" : "fout"));
+          verslag.innerHTML =
+            `${uit.verwerkt} van de ${uit.gelezen} regels verwerkt`
+            + (uit.nieuw ? `, waarvan ${uit.nieuw} nieuw` : "")
+            + `. Kopie van je oude gegevens: ${uit.kopie || "niet nodig"}.`
+            + (uit.waarschuwing ? `<br><span style="color:var(--letop)">${uit.waarschuwing}</span>` : "")
+            + lijstje(problemen);
+          await verversAlles();
+        }
+      } catch (fout) {
+        verslag.className = "verslag fout";
+        verslag.textContent = "Inlezen mislukt: " + fout.message;
+      }
+      veld.value = "";
+    });
+  });
+  bak.dataset.klaar = "1";
+}
+
+function lijstje(problemen) {
+  if (!problemen || !problemen.length) return "";
+  const eerste = problemen.slice(0, 8).map(p => `<li>${p.reden}</li>`).join("");
+  const rest = problemen.length > 8 ? `<li>en nog ${problemen.length - 8} regels</li>` : "";
+  return `<br>Overgeslagen:<ul>${eerste}${rest}</ul>`;
+}
+
+document.querySelectorAll("nav.tabs button").forEach(knop => {
+  knop.addEventListener("click", () => {
+    document.querySelectorAll("nav.tabs button").forEach(k => k.setAttribute("aria-selected", String(k === knop)));
+    if (knop.dataset.tab === "eigen") tekenSjablonen().catch(() => {});
+    for (const naam of ["marge", "voorraad", "recepten", "markt", "eigen"]) {
+      el("tab-" + naam).classList.toggle("verborgen", naam !== knop.dataset.tab);
+    }
+  });
+});
+
+el("knop-markt").addEventListener("click", () => {
+  staat.schuiven = Object.assign({}, staat.data.presets);
+  verversAlles();
+});
+
+el("knop-nul").addEventListener("click", () => {
+  staat.schuiven = {};
+  verversAlles();
+});
+
+el("knop-ververs").addEventListener("click", async () => {
+  const knop = el("knop-ververs");
+  knop.disabled = true;
+  el("markt-uitleg").textContent = "Bezig met ophalen bij de Europese Commissie...";
+  try {
+    const uit = await haal("/api/noteringen/ververs", {method: "POST"});
+    el("markt-uitleg").textContent = uit.aantal + " noteringen opgehaald en opgeslagen.";
+    await verversAlles();
+  } catch (fout) {
+    el("markt-uitleg").textContent = "Ophalen mislukt: " + fout.message + ". De oude cijfers blijven staan.";
+  } finally {
+    knop.disabled = false;
+  }
+});
+
+el("form-inkoop").addEventListener("submit", async gebeurtenis => {
+  gebeurtenis.preventDefault();
+  const uitslag = el("uitslag-inkoop");
+  const velden = Object.fromEntries(new FormData(gebeurtenis.target).entries());
+  try {
+    const uit = await haal("/api/inkoop", {
+      method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(velden),
+    });
+    uitslag.className = "uitslag goed";
+    uitslag.textContent = `Geboekt: ${uit.levering.aantal} in partij ${uit.levering.id} tegen ${euro(uit.levering.prijs_per_100)} per 100.`;
+    gebeurtenis.target.reset();
+    await verversAlles();
+    vulKeuzelijsten();
+  } catch (fout) {
+    uitslag.className = "uitslag fout";
+    uitslag.textContent = "Boeken mislukt: " + fout.message;
+  }
+});
+
+el("form-productie").addEventListener("submit", async gebeurtenis => {
+  gebeurtenis.preventDefault();
+  const uitslag = el("uitslag-productie");
+  const velden = Object.fromEntries(new FormData(gebeurtenis.target).entries());
+  try {
+    const uit = await haal("/api/productie", {
+      method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(velden),
+    });
+    uitslag.className = "uitslag " + (uit.tekorten.length ? "fout" : "goed");
+    uitslag.textContent = `${uit.stuks} stuks ${uit.recept} afgeboekt, grondstoffen ${euro(uit.grondstofkosten)} uit de oudste partijen.`
+      + (uit.tekorten.length ? " Let op, te weinig voorraad van: " + uit.tekorten.map(t => t.grondstof).join(", ") + "." : "");
+    await verversAlles();
+  } catch (fout) {
+    uitslag.className = "uitslag fout";
+    uitslag.textContent = "Afboeken mislukt: " + fout.message;
+  }
+});
+
+verversAlles().catch(fout => {
+  document.querySelector("main").insertAdjacentHTML("afterbegin",
+    `<div class="melding"><b>Kon de gegevens niet laden.</b> ${fout.message}. Draai eerst <code>python3 seed.py</code>.</div>`);
+});
+</script>
+</body>
+</html>

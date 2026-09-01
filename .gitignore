@@ -1,0 +1,4 @@
+__pycache__/
+.DS_Store
+# je eigen kopieen blijven op je eigen computer
+bakkerijsysteem/data/kopieen/
