@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Margemeter voor de bakkerij</title>
+<meta name="description" content="Alles van de sessie van 14 september: de margemeter, het bakkerijsysteem en de opdracht waarmee ze gebouwd zijn.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --papier:#F4F7FB; --kaart:#FFFFFF; --inkt:#0A1A2E; --grijs:#5A6B82; --zacht:#8496AC;
+    --blauw:#0C4DA2; --blauw-zacht:#E8F0FB; --oranje:#F28E1C; --oranje-zacht:#FFF3E4;
+    --lijn:#DCE4EE;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--papier);color:var(--inkt);
+       font-family:Inter,-apple-system,"Segoe UI",Arial,sans-serif;font-size:16px;line-height:1.6}
+  h1,h2,h3{font-family:Montserrat,Inter,sans-serif;margin:0;text-wrap:balance}
+  a{color:var(--blauw)}
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px}
+
+  header{background:var(--inkt);color:#fff;padding:38px 0 34px}
+  header .merk{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+               color:var(--oranje);margin:0 0 12px}
+  header h1{font-size:clamp(27px,6.2vw,40px);font-weight:800;letter-spacing:-.015em;line-height:1.12}
+  header p{margin:14px 0 0;color:#B9CAE0;font-size:17px;max-width:56ch}
+  .streep{height:3px;width:56px;background:var(--oranje);border-radius:2px;margin:0 0 18px}
+
+  main{padding:30px 0 60px}
+  .kaarten{display:grid;gap:14px}
+  .kaart{display:block;background:var(--kaart);border:1px solid var(--lijn);border-radius:14px;
+         padding:20px 22px;text-decoration:none;color:inherit;transition:border-color .12s, transform .12s}
+  .kaart:hover{border-color:var(--blauw);transform:translateY(-1px)}
+  .kaart .top{display:flex;align-items:baseline;gap:10px;justify-content:space-between}
+  .kaart h2{font-size:19px}
+  .kaart .pijl{color:var(--blauw);font-weight:700;font-size:18px;flex:0 0 auto}
+  .kaart p{margin:7px 0 0;color:var(--grijs);font-size:15px}
+  .kaart .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;
+              text-transform:uppercase;color:var(--blauw);background:var(--blauw-zacht);
+              border-radius:999px;padding:3px 10px;margin-top:12px}
+
+  h2.kop{font-size:20px;margin:38px 0 12px}
+  .stappen{counter-reset:stap;list-style:none;padding:0;margin:0}
+  .stappen li{position:relative;padding-left:42px;margin-bottom:16px}
+  .stappen li:before{counter-increment:stap;content:counter(stap);position:absolute;left:0;top:1px;
+    width:28px;height:28px;border-radius:8px;background:var(--blauw);color:#fff;
+    font-family:Montserrat,sans-serif;font-weight:800;font-size:14px;
+    display:flex;align-items:center;justify-content:center}
+  .stappen li b{display:block}
+  .stappen li span{color:var(--grijs);font-size:15px}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:14px;background:var(--blauw-zacht);
+       color:var(--blauw);padding:2px 6px;border-radius:5px;word-break:break-word}
+
+  .let{background:var(--oranje-zacht);border:1px solid #F3D7AE;border-left:5px solid var(--oranje);
+       border-radius:12px;padding:16px 20px;margin-top:20px}
+  .let b{color:#8A4E06}
+  .let ul{margin:8px 0 0;padding-left:20px}
+  .let li{margin-bottom:6px;font-size:15px}
+
+  footer{border-top:1px solid var(--lijn);margin-top:44px;padding-top:22px;color:var(--grijs);font-size:15px}
+  footer b{color:var(--inkt)}
+  @media (max-width:520px){ .kaart{padding:17px 18px} body{font-size:15.5px} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="streep"></div>
+    <p class="merk">Sessie 14 september 2026</p>
+    <h1>Margemeter voor de bakkerij</h1>
+    <p>Alles wat je in de zaal zag staat hier klaar. Je kunt het meteen openen, of het op je eigen computer zetten en er je eigen cijfers in doen.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="kaarten">
+    <a class="kaart" href="margecalculator/index.html">
+      <div class="top"><h2>Open de margemeter</h2><span class="pijl">&rarr;</span></div>
+      <p>Schuif aan de grondstofprijzen en zie welk product je marge opvreet, en wat dat je per jaar kost. Dit is wat er in de zaal in tien minuten gebouwd is.</p>
+      <span class="tag">Werkt meteen, ook op je telefoon</span>
+    </a>
+
+    <a class="kaart" href="presentatie.html">
+      <div class="top"><h2>De presentatie terugkijken</h2><span class="pijl">&rarr;</span></div>
+      <p>Alle slides van het halve uur, om op je gemak nog eens door te klikken.</p>
+      <span class="tag">Het mooist op een laptop</span>
+    </a>
+
+    <a class="kaart" href="handout-prompt.pdf">
+      <div class="top"><h2>De opdracht, om zelf te bouwen</h2><span class="pijl">&rarr;</span></div>
+      <p>Het kaartje van twee kantjes. Hierin staat woord voor woord wat je in Claude Code typt om de margemeter zelf te maken.</p>
+      <span class="tag">pdf om te printen</span>
+    </a>
+
+    <a class="kaart" href="https://github.com/toine-code/bakkerij-margemeter/archive/refs/heads/main.zip">
+      <div class="top"><h2>Alles downloaden</h2><span class="pijl">&darr;</span></div>
+      <p>Eén bestand met het complete pakket: de margemeter, het bakkerijsysteem, de opdracht en de startknoppen.</p>
+      <span class="tag">zip, ongeveer 2 MB</span>
+    </a>
+  </div>
+
+  <h2 class="kop">Het bakkerijsysteem op je eigen computer</h2>
+  <p>Groter dan de margemeter, en dichter bij hoe het echt werkt in je bakkerij: je grondstoffen
+  met de prijs per 100 kg van je leverancier, je recepten op bakkerspercentage, je voorraad in
+  partijen zodat het rekent met de zak bloem waar je nu echt uit bakt, en de marktnoteringen voor
+  tarwe, rogge, boter en suiker die het systeem zelf ophaalt bij de Europese Commissie.</p>
+
+  <ol class="stappen">
+    <li><b>Download het pakket</b><span>Gebruik de knop hierboven en pak het bestand uit, bijvoorbeeld op je bureaublad.</span></li>
+    <li><b>Dubbelklik de startknop</b><span>Op een Mac <code>Start bakkerijsysteem.command</code>, op Windows <code>Start bakkerijsysteem.bat</code>. De eerste keer duurt het een halve minuut.</span></li>
+    <li><b>Je browser gaat vanzelf open</b><span>Er blijft ook een zwart venster openstaan, dat hoort zo. Sluit je dat, dan stopt het systeem.</span></li>
+    <li><b>Zet je eigen cijfers erin</b><span>In het tabblad Je eigen cijfers zet je je facturen of je receptenboek neer en vraag je Claude Code om het systeem bij te werken. Of je vult de lijsten zelf in Excel in.</span></li>
+  </ol>
+
+  <p style="color:var(--grijs);font-size:15px">Er is Python 3 voor nodig. Op een Mac staat dat er al.
+  Op Windows haal je het eenmalig op bij <a href="https://www.python.org/downloads/">python.org</a>,
+  en vink je bij het installeren "Add Python to PATH" aan. De eerste keer waarschuwt je computer dat
+  het bestand van internet komt: op een Mac klik je met rechts op de startknop en kies je Openen,
+  op Windows klik je op Meer informatie en dan Toch uitvoeren.</p>
+
+  <div class="let">
+    <b>Vier dingen om te weten</b>
+    <ul>
+      <li>De cijfers die er nu in staan zijn voorbeelden. Ze zijn plausibel gekozen, maar het zijn niet jouw cijfers tot je ze vervangt.</li>
+      <li>Het rekent wat jij invult. Controleer de eerste tabel een keer met de hand.</li>
+      <li>Alles blijft op je eigen computer. Je recepten en prijzen gaan nergens heen. Alleen de marktnoteringen komen binnen, en alleen als je op die knop drukt.</li>
+      <li>Het is geen boekhouding. Overleg met je accountant voor je je prijskaart omgooit.</li>
+    </ul>
+  </div>
+
+  <footer>
+    <p><b>Toine Boelens</b>, YUTU, Den Bosch<br>
+    <a href="mailto:toine@yutugrow.nl">toine@yutugrow.nl</a> &middot; loop je vast, mail gerust, ik kijk mee.</p>
+    <p style="font-size:14px;color:var(--zacht)">De broncode staat op
+    <a href="https://github.com/toine-code/bakkerij-margemeter">github.com/toine-code/bakkerij-margemeter</a>.</p>
+  </footer>
+
+</main>
+</body>
+</html>
