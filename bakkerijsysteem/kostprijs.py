@@ -158,9 +158,19 @@ def vervangingsprijs_per_100(db, gid):
 # ---------------------------------------------------------------------------
 # Recepten
 # ---------------------------------------------------------------------------
+def schuifpercentage(db, gid, schuiven):
+    """
+    Een schuif op de grondstof zelf wint van een schuif op zijn groep. Zo kun je
+    zeggen "de slagroom wordt 10 procent duurder" zonder dat je hele zuivel meebeweegt.
+    """
+    s = schuiven or {}
+    if gid in s:
+        return s[gid]
+    return s.get(db["grondstoffen"].get(gid, {}).get("groep", ""), 0.0)
+
+
 def schuiffactor(db, gid, schuiven):
-    groep = db["grondstoffen"].get(gid, {}).get("groep", "")
-    return 1 + (schuiven or {}).get(groep, 0.0) / 100.0
+    return 1 + schuifpercentage(db, gid, schuiven) / 100.0
 
 
 def kosten_van(db, gid, hoeveelheid, prijsbron, schuiven):
@@ -331,6 +341,63 @@ def voorraadbeeld(db):
 # ---------------------------------------------------------------------------
 # Overzicht
 # ---------------------------------------------------------------------------
+def grondstof_impact(db=None):
+    """
+    Per grondstof: welke producten hem gebruiken, wat hij daarin kost, en wat een
+    prijsstijging van één procent je per week kost. Dat laatste getal is het
+    antwoord op "wat doet die grondstof met mijn hele assortiment".
+    """
+    db = db or laad()
+    per_grondstof = {}
+
+    for recept in db["recepten"]:
+        r = bereken_recept(db, recept, "fifo")
+        stuks_per_week = recept["per_week"]
+
+        # deeg en garnering staan in de regels, verpakking rekenen we er los bij
+        gebruik = {}
+        for regel in r["regels"]:
+            gebruik[regel["grondstof"]] = gebruik.get(regel["grondstof"], 0.0) + regel["per_stuk"]
+        for gid, per_stuk in recept.get("verpakking", {}).items():
+            kosten, _, _ = fifo_kosten(db, gid, per_stuk * r["stuks_per_batch"])
+            gebruik[gid] = gebruik.get(gid, 0.0) + kosten / r["stuks_per_batch"]
+
+        for gid, per_stuk in gebruik.items():
+            if per_stuk <= 0:
+                continue
+            bak = per_grondstof.setdefault(gid, {"producten": [], "week_kosten": 0.0})
+            bak["producten"].append({
+                "recept": recept["id"], "naam": recept["naam"], "groep": recept["groep"],
+                "per_stuk": round(per_stuk, 4),
+                "aandeel_pct": round(per_stuk / r["kostprijs"] * 100, 1),
+                "kostprijs": r["kostprijs"], "marge_pct": r["marge_pct"],
+                "per_week": stuks_per_week,
+                "week_kosten": round(per_stuk * stuks_per_week, 2),
+            })
+            bak["week_kosten"] += per_stuk * stuks_per_week
+
+    uit = []
+    for gid, bak in per_grondstof.items():
+        g = db["grondstoffen"].get(gid, {})
+        bak["producten"].sort(key=lambda x: -x["week_kosten"])
+        uit.append({
+            "id": gid, "naam": g.get("naam", gid), "groep": g.get("groep", ""),
+            "eenheid": g.get("eenheid", "kg"),
+            "prijs_per_100": round(fifo_prijs_per_100(db, gid), 2),
+            "week_kosten": round(bak["week_kosten"], 2),
+            "jaar_kosten": round(bak["week_kosten"] * 52, 2),
+            "per_procent_week": round(bak["week_kosten"] / 100.0, 2),
+            "per_procent_jaar": round(bak["week_kosten"] * 52 / 100.0, 2),
+            "aantal_producten": len(bak["producten"]),
+            "producten": bak["producten"],
+            "notering": (db["noteringen"].get("noteringen", {}) or {}).get(g.get("notering") or "", {}).get("naam"),
+            "verandering_jaar": (db["noteringen"].get("noteringen", {}) or {}).get(g.get("notering") or "", {}).get("verandering_jaar"),
+            "doorwerking": g.get("doorwerking", 0.0),
+        })
+    uit.sort(key=lambda x: -x["week_kosten"])
+    return uit
+
+
 def scenario_presets(db):
     """
     Wat de markt het afgelopen jaar deed, per grondstofgroep, gewogen naar hoeveel
@@ -398,6 +465,7 @@ def overzicht(db=None, schuiven=None):
         "vaste_kosten": db["vaste_kosten"],
         "schuiven": schuiven,
         "presets": scenario_presets(db),
+        "grondstoffen": grondstof_impact(db),
         "groepen": sorted({g["groep"] for g in db["grondstoffen"].values()}) + ["Loon en energie"],
         "totalen": {
             "week_omzet": round(sum(p["week_omzet"] for p in producten), 2),
@@ -529,20 +597,28 @@ def lees_csv(tekst):
 def webgegevens(db=None):
     db = db or laad()
     basis = overzicht(db, {})
-    for product, recept in zip(basis["producten"], db["recepten"]):
-        per_groep = {}
+    op_id = {r["id"]: r for r in db["recepten"]}
+    for product in basis["producten"]:
+        recept = op_id[product["id"]]
+        per_groep, per_grondstof = {}, {}
         for regel in product["regels"]:
             groep = regel["groep"] or "Overig"
             per_groep[groep] = round(per_groep.get(groep, 0.0) + regel["per_stuk"], 6)
-        if product["verpakking"]:
-            per_groep["Verpakking"] = round(per_groep.get("Verpakking", 0.0)
-                                            + product["verpakking"], 6)
+            gid = regel["grondstof"]
+            per_grondstof[gid] = round(per_grondstof.get(gid, 0.0) + regel["per_stuk"], 6)
+        for gid, per_stuk in recept.get("verpakking", {}).items():
+            kosten, _, _ = fifo_kosten(db, gid, per_stuk * product["stuks_per_batch"])
+            bedrag = kosten / product["stuks_per_batch"]
+            per_groep["Verpakking"] = round(per_groep.get("Verpakking", 0.0) + bedrag, 6)
+            per_grondstof[gid] = round(per_grondstof.get(gid, 0.0) + bedrag, 6)
         product["kosten_per_groep"] = per_groep
+        product["kosten_per_grondstof"] = per_grondstof
 
         # controle: de som moet exact de kostprijs zijn, anders klopt de webversie niet
         som = sum(per_groep.values()) + product["arbeid"] + product["oven"]
         product["klopt"] = abs(som - product["kostprijs"]) < 0.005
         product.pop("regels_lagen", None)
+    basis["grondstof_groep"] = {gid: g["groep"] for gid, g in db["grondstoffen"].items()}
     basis["kijkversie"] = True
     return basis
 

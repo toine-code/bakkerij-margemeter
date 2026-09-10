@@ -20,6 +20,7 @@ Daarna staat alles op `http://localhost:8777`. Stoppen doe je met ctrl-c.
 | Scherm | Waarvoor |
 | --- | --- |
 | Marge per product | Kostprijs en marge per product, slechtste bovenaan, met schuiven om te zien wat een prijsbeweging doet |
+| Per grondstof | Schuif aan één grondstof en zie wat dat met al je producten doet. De kolom "+1 procent" zegt wat elke procent je per jaar kost |
 | Voorraad en FIFO | Alle partijen op datum, hoelang je voorraad nog duurt, en het verschil tussen je voorraadprijs en vandaag bijkopen |
 | Recepten | Receptuur op bakkerspercentage, deeggewicht, bakverlies en kostprijsopbouw |
 | Marktnoteringen | De weeknoteringen die het systeem zelf ophaalt, met hun verloop over twee jaar |
@@ -30,6 +31,12 @@ waar je nu echt uit bakt, oudste eerst. De vervangingswaarde rekent alsof je van
 alles opnieuw moet inkopen. Draai je op oude, goedkope voorraad, dan ziet je marge er
 goed uit terwijl de markt allang is doorgelopen. De kolom "waar je nu uit bakt" laat
 zien hoeveel weken dat nog goed gaat.
+
+**Eén grondstof, heel je assortiment.** Word je slagroom tien procent duurder, dan wil je
+niet weten wat dat met de slagroom doet, maar wat het met je slagroomtaart doet, en met
+alles waar nog meer slagroom in zit. Dat is het tabblad Per grondstof. Elke grondstof
+heeft er zijn eigen schuif, en de kolom "+1 procent" laat zien wat elke procent
+prijsstijging je per jaar kost, nog voor je iets aanraakt.
 
 **Receptuur op bakkerspercentage.** Alles ten opzichte van het meel, zoals in de
 bakkerij. Het systeem rekent zelf uit hoeveel deeg dat is, hoeveel stuks er uit een

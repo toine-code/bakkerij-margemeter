@@ -106,6 +106,18 @@
   .groepkop td{background:var(--paper);font-size:11px;font-weight:700;letter-spacing:.08em;
                text-transform:uppercase;color:var(--zacht);padding:14px 9px 7px;border-bottom:1px solid var(--lijn)}
 
+  .zoekrij{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+  .zoekrij input[type=search]{
+    font:inherit;font-size:14px;border:1px solid var(--lijn);border-radius:9px;padding:9px 13px;
+    min-width:260px;background:#fff;color:var(--ink)
+  }
+  .zoekrij input[type=search]:focus{outline:2px solid var(--blauw-zacht);border-color:var(--blauw)}
+  .zoekrij .uitleg{font-size:12.5px;color:var(--muted);margin-left:auto;text-align:right;max-width:44ch}
+  .gschuif{display:flex;align-items:center;gap:9px;justify-content:flex-end}
+  .gschuif input[type=range]{width:118px}
+  .gschuif .w{font-size:12.5px;font-weight:700;min-width:46px;text-align:right;font-variant-numeric:tabular-nums}
+  .gschuif .w.op{color:var(--verlies)} .gschuif .w.af{color:var(--goed)} .gschuif .w.nul{color:var(--zacht)}
+  tr.gzwaar td{background:#FDFBF6}
   .noteringen{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
   .notering{background:var(--card);border:1px solid var(--lijn);border-radius:12px;padding:16px 18px}
   .notering .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
@@ -177,6 +189,7 @@
     </div>
     <nav class="tabs" role="tablist">
       <button role="tab" data-tab="marge" aria-selected="true">Marge per product</button>
+      <button role="tab" data-tab="grondstof" aria-selected="false">Per grondstof</button>
       <button role="tab" data-tab="voorraad" aria-selected="false">Voorraad en FIFO</button>
       <button role="tab" data-tab="recepten" aria-selected="false">Recepten</button>
       <button role="tab" data-tab="markt" aria-selected="false">Marktnoteringen</button>
@@ -232,6 +245,40 @@
         verkoopprijs exclusief 9% btw. Groen vanaf 65%, oranje tussen 55% en 65%, rood daaronder.
         Winkelkosten, bezorging en overhead zitten er niet in.
       </p>
+    </div>
+  </section>
+
+  <!-- ============================ PER GRONDSTOF ============================ -->
+  <section id="tab-grondstof" class="verborgen">
+    <div class="cijfers" id="kerncijfers-g"></div>
+
+    <div class="kaart">
+      <h2>Wat doet één grondstof met je hele assortiment</h2>
+      <p class="sub">
+        Schuif aan de prijs van een grondstof en kijk meteen wat er met al je producten gebeurt.
+        De kolom <b>+1 procent</b> zegt wat elke procent prijsstijging je per jaar kost, nog voor je
+        iets veranderd hebt. Klik op een regel om te zien in welke producten hij zit.
+      </p>
+      <div class="zoekrij">
+        <input type="search" id="zoek-grondstof" placeholder="Zoek een grondstof, bijvoorbeeld boter">
+        <button class="knop" id="g-nul">Alle schuiven terug op nul</button>
+        <span class="uitleg" id="g-uitleg"></span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Grondstof</th>
+            <th>Prijs nu</th>
+            <th style="width:190px">Schuif</th>
+            <th>Wordt</th>
+            <th>Kost per week</th>
+            <th>+1 procent</th>
+            <th>Producten</th>
+            <th style="width:120px">Effect per week</th>
+          </tr>
+        </thead>
+        <tbody id="grondstoffen"></tbody>
+      </table>
     </div>
   </section>
 
@@ -423,6 +470,7 @@ async function verversAlles() {
   tekenSchuiven();
   tekenProducten();
   tekenVoorraad();
+  tekenGrondstoffen();
   tekenRecepten();
   tekenNoteringen();
   vulKeuzelijsten();
@@ -585,6 +633,100 @@ function vulKeuzelijsten() {
   }
   const datum = document.querySelector("#form-inkoop input[name=datum]");
   if (datum && !datum.value) datum.value = new Date().toISOString().slice(0, 10);
+}
+
+function kleurKlasse(v) { return v > 0.05 ? "op" : v < -0.05 ? "af" : "nul"; }
+
+function tekenGrondstoffen() {
+  const zoek = (el("zoek-grondstof").value || "").trim().toLowerCase();
+  const lijst = (staat.data.grondstoffen || []).filter(g =>
+    !zoek || g.naam.toLowerCase().includes(zoek) || g.groep.toLowerCase().includes(zoek));
+
+  const perProduct = {};
+  for (const p of staat.data.producten) perProduct[p.id] = p;
+
+  const rijen = [];
+  for (const g of lijst) {
+    const schuif = staat.schuiven[g.id] !== undefined ? staat.schuiven[g.id] : "";
+    const viaGroep = staat.schuiven[g.id] === undefined ? (staat.schuiven[g.groep] || 0) : null;
+    const werkend = schuif !== "" ? schuif : (viaGroep || 0);
+    const nieuwePrijs = g.prijs_per_100 * (1 + werkend / 100);
+    const effectWeek = g.week_kosten * (werkend / 100);
+    rijen.push(`
+      <tr class="klik ${g.week_kosten > 100 ? "gzwaar" : ""}" data-grondstof="${g.id}">
+        <td><span class="nm">${g.naam}</span><span class="meta">${g.groep}${
+          g.verandering_jaar !== null && g.verandering_jaar !== undefined
+            ? ` · markt ${pct(g.verandering_jaar)} dit jaar` : ""}</span></td>
+        <td class="num">${euro(g.prijs_per_100)}<span class="meta">per 100 ${g.eenheid}</span></td>
+        <td>
+          <div class="gschuif" data-rem="1">
+            <input type="range" min="-50" max="100" step="1" value="${werkend}" data-schuif="${g.id}">
+            <span class="w ${kleurKlasse(werkend)}">${werkend ? pct(werkend, 0) : "0%"}</span>
+          </div>
+        </td>
+        <td class="num">${werkend ? euro(nieuwePrijs) : "<span class='delta nul'>gelijk</span>"}</td>
+        <td class="num">${euro0(g.week_kosten)}<span class="meta">${euro0(g.jaar_kosten)} per jaar</span></td>
+        <td class="num">${euro(g.per_procent_week)}<span class="meta">${euro0(g.per_procent_jaar)} per jaar</span></td>
+        <td class="num">${g.aantal_producten}</td>
+        <td class="num">${werkend
+            ? `<span class="delta ${effectWeek > 0 ? "op" : "af"}">${effectWeek > 0 ? "+" : "−"}${euro(Math.abs(effectWeek))}</span>`
+            : "<span class='delta nul'>–</span>"}</td>
+      </tr>`);
+
+    if (staat.openGrondstof && staat.openGrondstof.has(g.id)) {
+      const regels = g.producten.map(x => {
+        const p = perProduct[x.recept];
+        const sc = p ? p.scenario : null;
+        const veranderd = sc && Math.abs(sc.verschil_marge_pnt) > 0.05;
+        return `<tr>
+          <td>${x.naam}<span class="meta">${x.per_week.toLocaleString("nl-NL")} per week</span></td>
+          <td class="num">${euro(x.per_stuk)}<span class="meta">${getal(x.aandeel_pct, 0)}% van de kostprijs</span></td>
+          <td class="num">${euro(x.kostprijs)}${veranderd
+              ? `<span class="delta ${sc.verschil_kostprijs > 0 ? "op" : "af"}">wordt ${euro(sc.kostprijs)}</span>` : ""}</td>
+          <td class="num"><span class="pil ${p ? p.kleur : ""}">${getal(x.marge_pct, 1)}%</span>${veranderd
+              ? `<span class="delta ${sc.verschil_marge_pnt < 0 ? "op" : "af"}">wordt ${getal(sc.marge_pct, 1)}%</span>` : ""}</td>
+          <td class="num">${euro0(x.week_kosten)}</td>
+        </tr>`;
+      }).join("");
+      rijen.push(`<tr class="detail"><td colspan="8"><div class="detailbak" style="grid-template-columns:1fr">
+        <div>
+          <h3>${g.naam} zit in ${g.aantal_producten} product${g.aantal_producten === 1 ? "" : "en"}</h3>
+          <table class="mini">
+            <tr><td style="color:var(--zacht)">Product</td><td style="text-align:right;color:var(--zacht)">kosten per stuk</td>
+                <td style="text-align:right;color:var(--zacht)">kostprijs</td><td style="text-align:right;color:var(--zacht)">marge</td>
+                <td style="text-align:right;color:var(--zacht)">per week</td></tr>
+            ${regels}
+          </table>
+        </div></div></td></tr>`);
+    }
+  }
+  el("grondstoffen").innerHTML = rijen.join("") ||
+    `<tr><td colspan="8" class="leeg">Geen grondstof gevonden met "${zoek}".</td></tr>`;
+
+  el("grondstoffen").querySelectorAll("input[type=range]").forEach(schuif => {
+    schuif.addEventListener("input", () => {
+      staat.schuiven[schuif.dataset.schuif] = Number(schuif.value);
+      const w = schuif.parentElement.querySelector(".w");
+      w.textContent = Number(schuif.value) ? pct(Number(schuif.value), 0) : "0%";
+      w.className = "w " + kleurKlasse(Number(schuif.value));
+      wachtEnVerversScenario();
+    });
+  });
+  el("grondstoffen").querySelectorAll("tr.klik").forEach(rij => {
+    rij.addEventListener("click", gebeurtenis => {
+      if (gebeurtenis.target.closest(".gschuif")) return;
+      staat.openGrondstof = staat.openGrondstof || new Set();
+      const id = rij.dataset.grondstof;
+      staat.openGrondstof.has(id) ? staat.openGrondstof.delete(id) : staat.openGrondstof.add(id);
+      tekenGrondstoffen();
+    });
+  });
+
+  const aan = Object.entries(staat.schuiven).filter(([, v]) => v);
+  el("g-uitleg").textContent = aan.length
+    ? aan.length + " schuif" + (aan.length === 1 ? "" : "en") + " staat aan"
+    : "Nog niets aangezet. De kolom rechts vult zich zodra je schuift.";
+  el("kerncijfers-g").innerHTML = el("kerncijfers").innerHTML;
 }
 
 function tekenVoorraad() {
@@ -810,7 +952,7 @@ document.querySelectorAll("nav.tabs button").forEach(knop => {
   knop.addEventListener("click", () => {
     document.querySelectorAll("nav.tabs button").forEach(k => k.setAttribute("aria-selected", String(k === knop)));
     if (knop.dataset.tab === "eigen") { tekenSjablonen().catch(() => {}); tekenAangeleverd(); }
-    for (const naam of ["marge", "voorraad", "recepten", "markt", "eigen"]) {
+    for (const naam of ["marge", "grondstof", "voorraad", "recepten", "markt", "eigen"]) {
       el("tab-" + naam).classList.toggle("verborgen", naam !== knop.dataset.tab);
     }
   });
@@ -820,6 +962,9 @@ el("knop-markt").addEventListener("click", () => {
   staat.schuiven = Object.assign({}, staat.data.presets);
   verversAlles();
 });
+
+el("zoek-grondstof").addEventListener("input", () => tekenGrondstoffen());
+el("g-nul").addEventListener("click", () => { staat.schuiven = {}; verversAlles(); });
 
 el("knop-nul").addEventListener("click", () => {
   staat.schuiven = {};
