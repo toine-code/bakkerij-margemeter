@@ -173,6 +173,27 @@
   .sjabloon .verslag.deels{color:var(--letop)}
   .sjabloon .verslag.deels ul{color:var(--letop)}
   .sjabloon .verslag ul{margin:6px 0 0;padding-left:18px;color:var(--verlies)}
+  .stappen{counter-reset:stap;list-style:none;padding:0;margin:14px 0 0}
+  .stappen li{position:relative;padding-left:44px;margin-bottom:18px}
+  .stappen li:before{counter-increment:stap;content:counter(stap);position:absolute;left:0;top:0;
+    width:29px;height:29px;border-radius:8px;background:var(--blauw);color:#fff;
+    font-family:Montserrat,sans-serif;font-weight:800;font-size:14px;
+    display:flex;align-items:center;justify-content:center}
+  .stappen li > b:first-child{display:block;font-family:Montserrat,sans-serif;font-size:15.5px}
+  .stappen li span{display:block;color:var(--muted);font-size:14px;line-height:1.55;margin-top:3px}
+  ul.waarschuwing{list-style:none;padding:0;margin:6px 0 0}
+  ul.waarschuwing li{position:relative;padding-left:26px;margin-bottom:13px;font-size:14.5px;line-height:1.55;color:var(--muted)}
+  ul.waarschuwing li:before{content:"";position:absolute;left:0;top:7px;width:11px;height:11px;
+    border-radius:3px;background:var(--oranje)}
+  ul.waarschuwing li b{color:var(--ink)}
+  .vraag{position:relative;margin:12px 0}
+  .vraag pre{background:#0E2138;color:#D6E4F5;border-radius:11px;padding:16px 18px;margin:0;
+             font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:1.6;
+             white-space:pre-wrap;overflow-x:auto}
+  .vraag .kopieer{position:absolute;top:10px;right:10px;background:#1E3A5C;color:#D6E4F5;
+                  border:1px solid #2B4E77;border-radius:8px;font:inherit;font-size:12px;font-weight:600;
+                  padding:5px 11px;cursor:pointer}
+  .vraag .kopieer:hover{background:#28496F;color:#fff}
   .leeg{color:var(--muted);font-size:13.5px;padding:14px 0}
   .verborgen{display:none}
   .wacht{opacity:.45;transition:opacity .12s}
@@ -194,6 +215,8 @@
       <button role="tab" data-tab="recepten" aria-selected="false">Recepten</button>
       <button role="tab" data-tab="markt" aria-selected="false">Marktnoteringen</button>
       <button role="tab" data-tab="eigen" aria-selected="false">Je eigen cijfers</button>
+      <button role="tab" data-tab="claudecode" aria-selected="false">Claude Code</button>
+      <button role="tab" data-tab="letop" aria-selected="false">Let op</button>
     </nav>
   </div>
 </header>
@@ -432,6 +455,124 @@ plaatsen omdat het niet duidelijk was.</pre>
         Werkt je Excel met puntkomma's of met komma's? Allebei goed, het systeem herkent het zelf.
         Een prijs mag je schrijven als 48,50 of als 48.50.
       </p>
+    </div>
+  </section>
+
+  <!-- ============================ CLAUDE CODE ============================ -->
+  <section id="tab-claudecode" class="verborgen">
+    <div class="kaart">
+      <h2>Wat is Claude Code</h2>
+      <p class="sub">
+        Het programma waarmee dit hele systeem gebouwd is. Je typt in gewoon Nederlands wat je wil
+        hebben, en het maakt het. Geen codetaal, geen cursus, geen tussenpersoon. Je hoeft geen
+        programmeur te zijn, dat is de hele grap.
+      </p>
+      <div class="cols-uitleg">
+        <div class="uitlegblok">
+          <h3>Je vertelt het gewoon</h3>
+          <p>"Zet er een kolom bij met de prijs per kilo." "Maak de letters groter." "Reken ook mijn
+          transportkosten mee." Zulke zinnen zijn genoeg. Klopt het niet, dan zeg je dat en hij past
+          het aan.</p>
+        </div>
+        <div class="uitlegblok">
+          <h3>Het draait bij jou</h3>
+          <p>Op je eigen Mac of Windows-computer, in een map die jij kiest. Wat je maakt blijft van jou
+          en staat op jouw schijf.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="kaart">
+      <h2>Zelf installeren, in drie stappen</h2>
+      <ol class="stappen">
+        <li><b>Download het</b><span>Ga naar <a href="https://claude.com/download" target="_blank" rel="noopener">claude.com/download</a>,
+          installeer het en log in. Je hebt een betaald abonnement nodig, Pro kost ongeveer 20 dollar
+          per maand. Gratis werkt hier niet.</span></li>
+        <li><b>Zet de instellingen goed</b><span>Doe dit meteen, voor je begint. Hoe dat moet staat op
+          het tabblad <b>Let op</b> hiernaast.</span></li>
+        <li><b>Maak een map en begin</b><span>Maak een lege map op je bureaublad, open het tabblad
+          <code>Code</code>, klik op <b>Select folder</b> en kies die map. Typ dan wat je wil hebben.</span></li>
+      </ol>
+    </div>
+
+    <div class="kaart">
+      <h2>De opdracht waarmee de margecalculator gebouwd is</h2>
+      <p class="sub">Woord voor woord, je hoeft niets te verzinnen. Plak dit in Claude Code en je hebt hem zelf.</p>
+      <div class="vraag">
+        <button class="kopieer" type="button">Kopieer</button>
+        <pre>Maak een bestand margemeter.html dat ik gewoon in mijn browser kan openen,
+zonder installatie, en dat alles in de pagina zelf uitrekent.
+
+Het is een margemeter voor mijn bakkerij.
+
+Bovenin vier schuiven: bloem en meel, roomboter en zuivel, overige
+grondstoffen, en loon en energie. Elke schuif loopt van min 50 procent tot
+plus 100 procent.
+
+Vul het met voorbeeldrecepten van een Nederlandse bakkerij: wit brood,
+desembrood, croissant, chocoladebroodje, worstenbroodje, amandelstaaf,
+appeltaart en slagroomtaart. Zet per product neer: de grondstoffen in grammen
+per stuk, hoeveel stuks er in een batch gaan, de minuten werk en de minuten
+oven per batch, de verpakking per stuk, de verkoopprijs inclusief 9 procent
+btw, en hoeveel ik er per week van verkoop.
+
+Reken per product de kostprijs per stuk uit, dus grondstoffen plus arbeid plus
+oven plus verpakking, en de marge ten opzichte van de verkoopprijs exclusief
+btw. Zet de producten in een tabel met de slechtste marge bovenaan.
+
+Schrijf alles in het Nederlands en houd het uiterlijk rustig en zakelijk.</pre>
+      </div>
+
+      <h2 style="margin-top:26px">En dan praat je gewoon door</h2>
+      <p class="sub">Elk van deze zinnen is een volgende opdracht.</p>
+      <div class="sjablonen">
+        <div class="sjabloon"><h3>Je eigen prijzen</h3><p class="wat">"Hier zijn mijn echte inkoopprijzen van deze week. Vervang de voorbeeldprijzen hiermee."</p></div>
+        <div class="sjabloon"><h3>Advies per product</h3><p class="wat">"Zet achter elk product wat ik moet doen bij duurdere boter, en welke verkoopprijs ik nodig heb om op mijn marge te blijven."</p></div>
+        <div class="sjabloon"><h3>Bewaren en afdrukken</h3><p class="wat">"Onthoud mijn prijzen, en zet er een knop bij die de tabel afdrukt voor mijn boekhouder."</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ LET OP ============================ -->
+  <section id="tab-letop" class="verborgen">
+    <div class="kaart" style="border-left:5px solid var(--oranje)">
+      <h2>Zet uit dat je gegevens gebruikt worden om het model te trainen</h2>
+      <p class="sub">
+        Doe dit voordat je je eigen recepten, inkoopprijzen of klantgegevens in Claude zet. Het kost
+        een halve minuut en het geldt vanaf dat moment voor al je nieuwe gesprekken.
+      </p>
+      <ol class="stappen">
+        <li><b>Open je instellingen</b><span>Klik op je naam linksonder in Claude en kies <b>Settings</b>.
+          Of ga rechtstreeks naar
+          <a href="https://claude.ai/settings/data-privacy-controls" target="_blank" rel="noopener">claude.ai/settings/data-privacy-controls</a>.</span></li>
+        <li><b>Ga naar Privacy</b><span>In het menu aan de zijkant kies je <b>Privacy</b>.</span></li>
+        <li><b>Zet de schakelaar uit</b><span>Onder <b>Help Improve Claude</b> zet je de schakelaar uit.
+          Vanaf dat moment worden je nieuwe gesprekken niet meer gebruikt om het model te trainen.</span></li>
+      </ol>
+      <p class="sub" style="margin-top:16px">
+        Dit geldt voor de gewone abonnementen (Free, Pro en Max). Zakelijke abonnementen gebruiken je
+        invoer sowieso niet om te trainen.
+      </p>
+    </div>
+
+    <div class="kaart">
+      <h2>Waar je zelf verantwoordelijk voor blijft</h2>
+      <ul class="waarschuwing">
+        <li><b>De cijfers hierin zijn voorbeelden.</b> Ze zijn plausibel gekozen, maar het zijn niet
+          jouw cijfers tot je ze vervangt. Reken er niets op door voordat je je eigen inkoop en
+          verkoop hebt ingevuld.</li>
+        <li><b>Het rekent wat jij invult.</b> Zet je er een verkeerde prijs in, dan komt er een keurige
+          verkeerde uitkomst uit. Controleer de eerste tabel een keer met de hand.</li>
+        <li><b>Dit is geen boekhouding en geen advies.</b> Het rekent tot en met je directe
+          productiekosten. Winkelkosten, bezorging, derving en overhead zitten er niet in. Overleg met
+          je accountant voordat je je prijskaart omgooit.</li>
+        <li><b>Zet er geen persoonsgegevens in.</b> Recepten, inkoopprijzen en marges zijn prima.
+          Gegevens van klanten of personeel houd je erbuiten.</li>
+        <li><b>YUTU is niet aansprakelijk.</b> Dit systeem en de opdracht erachter krijg je om zelf mee
+          verder te gaan. Wat jij er vervolgens mee bouwt, invult of besluit is je eigen keuze, en
+          YUTU Grow B.V. is niet aansprakelijk voor fouten, schade of gederfde winst die daaruit
+          voortkomt. Ook niet voor wat Claude Code bij jou op de computer doet.</li>
+      </ul>
     </div>
   </section>
 
@@ -952,7 +1093,7 @@ document.querySelectorAll("nav.tabs button").forEach(knop => {
   knop.addEventListener("click", () => {
     document.querySelectorAll("nav.tabs button").forEach(k => k.setAttribute("aria-selected", String(k === knop)));
     if (knop.dataset.tab === "eigen") { tekenSjablonen().catch(() => {}); tekenAangeleverd(); }
-    for (const naam of ["marge", "grondstof", "voorraad", "recepten", "markt", "eigen"]) {
+    for (const naam of ["marge", "grondstof", "voorraad", "recepten", "markt", "eigen", "claudecode", "letop"]) {
       el("tab-" + naam).classList.toggle("verborgen", naam !== knop.dataset.tab);
     }
   });
@@ -1021,6 +1162,23 @@ el("form-productie").addEventListener("submit", async gebeurtenis => {
     uitslag.className = "uitslag fout";
     uitslag.textContent = "Afboeken mislukt: " + fout.message;
   }
+});
+
+document.querySelectorAll(".vraag .kopieer").forEach(knop => {
+  knop.addEventListener("click", async () => {
+    const tekst = knop.parentElement.querySelector("pre").textContent;
+    try {
+      await navigator.clipboard.writeText(tekst);
+      knop.textContent = "Gekopieerd";
+    } catch (fout) {
+      const bereik = document.createRange();
+      bereik.selectNodeContents(knop.parentElement.querySelector("pre"));
+      const selectie = window.getSelection();
+      selectie.removeAllRanges(); selectie.addRange(bereik);
+      knop.textContent = "Geselecteerd";
+    }
+    setTimeout(() => { knop.textContent = "Kopieer"; }, 2400);
+  });
 });
 
 verversAlles().catch(fout => {

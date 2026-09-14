@@ -89,85 +89,31 @@
 
   <div class="kaarten">
     <a class="kaart" href="webversie/index.html">
-      <div class="top"><h2>Bekijk het bakkerijsysteem</h2><span class="pijl">&rarr;</span></div>
-      <p>Je marge per product, je voorraad met de partij waar je nu uit bakt, je receptuur op bakkerspercentage, en de marktnoteringen voor tarwe, boter en suiker. Kijken en aan de schuiven trekken kan meteen, je eigen cijfers erin zetten doe je in de versie op je eigen computer.</p>
+      <div class="top"><h2>Het bakkerijsysteem</h2><span class="pijl">&rarr;</span></div>
+      <p>Je marge per product, wat één grondstof met je hele assortiment doet, je voorraad, je receptuur en de marktnoteringen voor tarwe, boter en suiker. Op de tabbladen <b>Claude Code</b> en <b>Let op</b> staat hoe je zelf begint en wat je eerst moet uitzetten.</p>
       <span class="tag">Werkt meteen, ook op je telefoon</span>
     </a>
 
-    <a class="kaart" href="https://github.com/toine-code/bakkerij-margemeter/archive/refs/heads/main.zip">
-      <div class="top"><h2>Download het pakket</h2><span class="pijl">&darr;</span></div>
-      <p>Het complete systeem om op je eigen computer te zetten. Hieronder staat in vier stappen hoe je het aan de praat krijgt.</p>
-      <span class="tag">zip, ongeveer 2 MB</span>
+    <a class="kaart" href="presentatie.html">
+      <div class="top"><h2>De presentatie terugkijken</h2><span class="pijl">&rarr;</span></div>
+      <p>Alle slides van vanavond, om op je gemak nog eens door te klikken.</p>
+      <span class="tag">Het mooist op een laptop</span>
     </a>
   </div>
 
-  <h2 class="kop" id="systeem">Het bakkerijsysteem op je eigen computer</h2>
-  <p>Zo dicht mogelijk bij hoe het echt werkt in je bakkerij: je grondstoffen met de prijs per
-  100 kg van je leverancier, je recepten op bakkerspercentage, je voorraad in partijen zodat het
-  rekent met de zak bloem waar je nu echt uit bakt, en de marktnoteringen voor tarwe, rogge, boter
-  en suiker die het systeem zelf ophaalt bij de Europese Commissie.</p>
-
-  <ol class="stappen">
-    <li><b>Haal Claude Code op</b><span>Ga naar <a href="https://claude.com/download">claude.com/download</a>,
-      installeer het en log in. Je hebt een betaald abonnement nodig, Pro kost ongeveer 20 dollar per maand.
-      Gratis werkt hier niet.</span></li>
-
-    <li><b>Download het pakket</b><span>Gebruik de knop hierboven en pak het bestand uit, bijvoorbeeld op je
-      bureaublad. Je houdt een map over die <code>bakkerij-margemeter-main</code> heet.</span></li>
-
-    <li><b>Geef die map aan Claude Code</b><span>Open Claude Code, kies het tabblad <code>Code</code>, klik op
-      <b>Select folder</b> en kies die map. Plak dan dit:</span>
-      <div class="vraag">
-        <button class="kopieer" type="button">Kopieer</button>
-        <pre>Start het bakkerijsysteem uit deze map en zet het open in mijn browser.
-Als er iets ontbreekt om het te laten draaien, installeer dat dan eerst
-en leg in gewone taal uit wat je doet.</pre>
-      </div>
-      <span>Je browser gaat vanzelf open op het systeem. Liever zonder Claude Code? Dubbelklik dan
-      <code>Start bakkerijsysteem.command</code> op een Mac of <code>Start bakkerijsysteem.bat</code>
-      op Windows.</span>
-    </li>
-
-    <li><b>Zet je eigen cijfers erin</b><span>In het systeem zit het tabblad <b>Je eigen cijfers</b>. Daar zit
-      een knop waarmee je je eigen bestanden inlaadt: je inkoopfacturen, je receptenboek, je prijslijst.
-      Een pdf, een Excel-bestand of een foto van een papiertje, het maakt niet uit. Zet ze neer en plak
-      daarna dit in Claude Code:</span>
-      <div class="vraag">
-        <button class="kopieer" type="button">Kopieer</button>
-        <pre>Lees de bestanden in de map bakkerijsysteem/data/aangeleverd en werk mijn
-bakkerijsysteem daarmee bij.
-
-Het gaat om mijn eigen inkoopprijzen, mijn recepten en mijn verkoopprijzen.
-Zet ze in bakkerijsysteem/data/grondstoffen.json, recepten.json en inkoop.json,
-in dezelfde vorm als wat daar nu al staat. Maak eerst een kopie van die drie
-bestanden, zodat ik terug kan.
-
-De recepten staan op bakkerspercentage, dus alles ten opzichte van het meel.
-Inkoopprijzen zijn per 100 kg. Verkoopprijzen zijn inclusief btw.
-
-Vertel me daarna in gewone taal wat je hebt gewijzigd, en wat je niet kon
-plaatsen omdat het niet duidelijk was.</pre>
-      </div>
-      <span>Ververs daarna het scherm. Vanaf dat moment gaan alle cijfers over jouw bakkerij.</span>
-    </li>
-  </ol>
-
   <div class="let">
-    <b>Vier dingen om te weten</b>
+    <b>Voordat je je eigen cijfers erin zet</b>
     <ul>
-      <li>De cijfers die er nu in staan zijn voorbeelden. Ze zijn plausibel gekozen, maar het zijn niet jouw cijfers tot je ze vervangt.</li>
-      <li>Het rekent wat jij invult. Controleer de eerste tabel een keer met de hand.</li>
-      <li>Alles blijft op je eigen computer. Je recepten en prijzen gaan nergens heen. Alleen de marktnoteringen komen binnen, en alleen als je op die knop drukt.</li>
-      <li>Het is geen boekhouding. Overleg met je accountant voor je je prijskaart omgooit.</li>
+      <li>Zet in Claude uit dat je gegevens gebruikt worden om het model te trainen. Hoe dat moet staat op het tabblad <b>Let op</b> in het systeem.</li>
+      <li>De cijfers die er nu in staan zijn voorbeelden. Het worden pas jouw cijfers als je ze vervangt.</li>
+      <li>Het is geen boekhouding en geen advies. Overleg met je accountant voor je je prijskaart omgooit.</li>
     </ul>
   </div>
 
   <footer>
     <p><b>Toine Boelens</b>, YUTU, Den Bosch<br>
     <a href="mailto:toine@yutugrow.nl">toine@yutugrow.nl</a> &middot; loop je vast, mail gerust, ik kijk mee.</p>
-    <p style="font-size:14.5px">Ook nog hier: <a href="presentatie.html">de presentatie terugkijken</a>
-    &middot; <a href="handout-prompt.pdf">het kaartje met de opdracht</a></p>
-    <p style="font-size:14px;color:var(--zacht)">De broncode staat op
+    <p style="font-size:14px;color:var(--zacht)">De bestanden staan op
     <a href="https://github.com/toine-code/bakkerij-margemeter">github.com/toine-code/bakkerij-margemeter</a>.</p>
   </footer>
 
