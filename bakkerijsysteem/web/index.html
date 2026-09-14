@@ -221,6 +221,7 @@
       <button role="tab" data-tab="markt" aria-selected="false">Marktnoteringen</button>
       <button role="tab" data-tab="eigen" aria-selected="false">Je eigen cijfers</button>
       <button role="tab" data-tab="claudecode" aria-selected="false">Claude Code</button>
+      <button role="tab" data-tab="koppelen" aria-selected="false">Koppelen</button>
       <button role="tab" data-tab="letop" aria-selected="false">Let op</button>
     </nav>
   </div>
@@ -553,6 +554,96 @@ Schrijf alles in het Nederlands en houd het uiterlijk rustig en zakelijk.</pre>
     </div>
   </section>
 
+  <!-- ============================ KOPPELEN ============================ -->
+  <section id="tab-koppelen" class="verborgen">
+    <div class="kaart">
+      <h2>Twee systemen die met elkaar praten</h2>
+      <p class="sub">
+        Een koppeling heet in computertaal een API. Je hoeft dat woord niet te onthouden, wel wat het
+        doet: twee programma's geven elkaar gegevens door, zonder dat iemand iets overtypt. Je
+        grossier verandert een prijs, en een minuut later staat die prijs in jouw systeem.
+      </p>
+      <div class="cols-uitleg">
+        <div class="uitlegblok">
+          <h3>Dit systeem doet het al</h3>
+          <p>De marktnoteringen op het tabblad Marktnoteringen worden niet ingetypt. Die haalt dit
+          systeem elke keer zelf op bij de Europese Commissie, via zo'n koppeling. Dat is geen
+          belofte, dat draait hier.</p>
+        </div>
+        <div class="uitlegblok">
+          <h3>Zo werkt het in het echt</h3>
+          <p>De ene kant biedt gegevens aan op een vast adres, de andere kant vraagt ze op. Je krijgt
+          meestal een sleutel, een soort wachtwoord, zodat alleen jij bij jouw gegevens kunt.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="kaart">
+      <h2>Wat je zou kunnen koppelen</h2>
+      <table>
+        <thead>
+          <tr><th>Waarmee</th><th>Wat er dan binnenkomt</th><th>Wat het je oplevert</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="nm">Je grossier</span><span class="meta">de groothandel waar je inkoopt</span></td>
+            <td>Je actuele inkoopprijzen, per artikel</td>
+            <td>Je kostprijs klopt altijd, ook de dag nadat zij een prijs veranderen. Geen prijslijst meer overtypen.</td>
+          </tr>
+          <tr>
+            <td><span class="nm">Je kassa</span><span class="meta">of je bestelsysteem</span></td>
+            <td>Wat je werkelijk verkocht hebt, per product per dag</td>
+            <td>De weekaantallen in dit systeem kloppen met de werkelijkheid in plaats van met een schatting.</td>
+          </tr>
+          <tr>
+            <td><span class="nm">Je voorraadsysteem</span><span class="meta">of je ERP</span></td>
+            <td>Wat er binnenkwam en wat eruit ging</td>
+            <td>De partijen lopen vanzelf door, dus je rekent altijd met de zak bloem waar je nu echt uit bakt.</td>
+          </tr>
+          <tr>
+            <td><span class="nm">Je boekhouding</span><span class="meta">bijvoorbeeld Exact of e-Boekhouden</span></td>
+            <td>Je inkoopfacturen</td>
+            <td>Elke levering die je boekt is meteen een partij in je voorraad, met de juiste prijs.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="sub" style="margin-top:16px">
+        <b>Eerlijk erbij:</b> het kan alleen als de andere partij een koppeling aanbiedt. Vraag het ze
+        gewoon. Veel grossiers en kassaleveranciers hebben er een, ze noemen het zelf een API of een
+        koppeling, en ze geven je dan een sleutel.
+      </p>
+    </div>
+
+    <div class="kaart">
+      <h2>En dit bouw je met Claude Code</h2>
+      <p class="sub">
+        Zo'n koppeling is een paar uur werk, geen project van maanden. Je hebt de documentatie van je
+        leverancier nodig en een sleutel. Dit vraag je aan Claude Code:
+      </p>
+      <div class="vraag">
+        <button class="kopieer" type="button">Kopieer</button>
+        <pre>Ik wil mijn bakkerijsysteem koppelen aan [naam van je leverancier of kassa].
+
+Hier is de documentatie van hun koppeling: [plak de link of het bestand].
+Mijn sleutel staat in [zeg waar, bijvoorbeeld: het bestand sleutels.txt].
+
+Haal daar mijn actuele inkoopprijzen op en zet ze in
+bakkerijsysteem/data/grondstoffen.json, in de vorm die daar al staat.
+Maak eerst een kopie van dat bestand.
+
+Zorg dat ik het opnieuw kan draaien wanneer ik wil, en dat ik in het scherm
+zie wanneer de prijzen voor het laatst zijn opgehaald.
+
+Loopt het mis, laat dat dan zien in gewone taal in plaats van stilletjes de
+oude prijzen te laten staan.</pre>
+      </div>
+      <p class="sub">
+        Weet je niet of je leverancier een koppeling heeft? Vraag Claude Code om het uit te zoeken, of
+        stuur ze een mail met de vraag of ze een API aanbieden en hoe je een sleutel krijgt.
+      </p>
+    </div>
+  </section>
+
   <!-- ============================ LET OP ============================ -->
   <section id="tab-letop" class="verborgen">
     <div class="kaart" style="border-left:5px solid var(--oranje)">
@@ -812,7 +903,8 @@ function tekenGrondstoffen() {
     const viaGroep = staat.schuiven[g.id] === undefined ? (staat.schuiven[g.groep] || 0) : null;
     const werkend = schuif !== "" ? schuif : (viaGroep || 0);
     const nieuwePrijs = g.prijs_per_100 * (1 + werkend / 100);
-    const effectWeek = g.week_kosten * (werkend / 100);
+    const basis = g.basis_week_kosten !== undefined ? g.basis_week_kosten : g.week_kosten;
+    const effectWeek = g.week_kosten - basis;
     rijen.push(`
       <tr class="klik ${g.week_kosten > 100 ? "gzwaar" : ""}" data-grondstof="${g.id}">
         <td><span class="nm">${g.naam}</span><span class="meta">${g.groep}${
@@ -1113,7 +1205,7 @@ document.querySelectorAll("nav.tabs button").forEach(knop => {
   knop.addEventListener("click", () => {
     document.querySelectorAll("nav.tabs button").forEach(k => k.setAttribute("aria-selected", String(k === knop)));
     if (knop.dataset.tab === "eigen") { tekenSjablonen().catch(() => {}); tekenAangeleverd(); }
-    for (const naam of ["marge", "grondstof", "voorraad", "recepten", "markt", "eigen", "claudecode", "letop"]) {
+    for (const naam of ["marge", "grondstof", "voorraad", "recepten", "markt", "eigen", "claudecode", "koppelen", "letop"]) {
       el("tab-" + naam).classList.toggle("verborgen", naam !== knop.dataset.tab);
     }
   });

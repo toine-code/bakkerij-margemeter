@@ -398,6 +398,36 @@ def grondstof_impact(db=None):
     return uit
 
 
+def grondstof_met_schuiven(db, schuiven, producten):
+    """
+    Het grondstofoverzicht, met de schuiven erin verwerkt.
+
+    Kosten zijn recht evenredig met de prijs, dus een grondstof die tien procent
+    duurder wordt kost je ook tien procent meer per week. Zonder deze stap zou
+    de kolom "kost per week" blijven staan terwijl de schuif al verschoven is,
+    en dat leest als een fout.
+    """
+    scenario_kostprijs = {p["id"]: p["scenario"]["kostprijs"] for p in producten}
+    uit = grondstof_impact(db)
+    for g in uit:
+        factor = schuiffactor(db, g["id"], schuiven)
+        g["basis_week_kosten"] = g["week_kosten"]
+        g["schuif_pct"] = round(schuifpercentage(db, g["id"], schuiven), 1)
+        if factor == 1.0:
+            continue
+        g["week_kosten"] = round(g["week_kosten"] * factor, 2)
+        g["jaar_kosten"] = round(g["jaar_kosten"] * factor, 2)
+        g["per_procent_week"] = round(g["week_kosten"] / 100.0, 2)
+        g["per_procent_jaar"] = round(g["jaar_kosten"] / 100.0, 2)
+        for prod in g["producten"]:
+            prod["per_stuk"] = round(prod["per_stuk"] * factor, 4)
+            prod["week_kosten"] = round(prod["week_kosten"] * factor, 2)
+            nieuw = scenario_kostprijs.get(prod["recept"])
+            if nieuw:
+                prod["aandeel_pct"] = round(prod["per_stuk"] / nieuw * 100, 1)
+    return uit
+
+
 def scenario_presets(db):
     """
     Wat de markt het afgelopen jaar deed, per grondstofgroep, gewogen naar hoeveel
@@ -465,7 +495,7 @@ def overzicht(db=None, schuiven=None):
         "vaste_kosten": db["vaste_kosten"],
         "schuiven": schuiven,
         "presets": scenario_presets(db),
-        "grondstoffen": grondstof_impact(db),
+        "grondstoffen": grondstof_met_schuiven(db, schuiven, producten),
         "groepen": sorted({g["groep"] for g in db["grondstoffen"].values()}) + ["Loon en energie"],
         "totalen": {
             "week_omzet": round(sum(p["week_omzet"] for p in producten), 2),
