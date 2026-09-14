@@ -138,6 +138,11 @@
   .formulier button{align-self:flex-end}
   .uitslag{font-size:13px;margin:14px 0 0;min-height:1em}
   .uitslag.goed{color:var(--goed)} .uitslag.fout{color:var(--verlies)}
+  .pakket{display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+          background:var(--blauw-zacht);border:1px solid #C4DBF6;border-radius:12px;
+          padding:16px 20px;margin-bottom:16px}
+  .pakket b{display:block;font-family:Montserrat,sans-serif;font-size:15px}
+  .pakket span{display:block;font-size:13.5px;color:var(--muted);margin-top:3px;max-width:64ch}
   .opgooi{display:flex;gap:14px;align-items:center;flex-wrap:wrap;
           border:2px dashed var(--lijn);border-radius:12px;padding:22px 24px;background:#FBFCFE}
   .opgooi-uitleg{font-size:13px;color:var(--muted)}
@@ -390,25 +395,61 @@
   <section id="tab-eigen" class="verborgen">
     <div class="kaart">
       <h2>Je eigen recepten en prijzen erin</h2>
-      <p class="sub">Dit werkt alleen in het systeem op je eigen computer, want daar staan je bestanden.</p>
+      <p class="sub">
+        Hiervoor heb je het systeem op je eigen computer nodig, want daar staan jouw bestanden.
+        Download het pakket, geef de map aan Claude Code, en zet er daarna je eigen cijfers in.
+      </p>
+      <div class="pakket">
+        <div>
+          <b>Het complete systeem, om zelf te draaien</b>
+          <span>Pak het uit op je bureaublad en geef de map aan Claude Code. Op het tabblad
+          Claude Code staat hoe je dat doet.</span>
+        </div>
+        <a class="knop vol" href="https://github.com/toine-code/bakkerij-margemeter/archive/refs/heads/main.zip">Download het systeem</a>
+      </div>
+
       <div class="cols-uitleg">
         <div class="uitlegblok">
           <h3>Gooi je bestanden erin</h3>
           <p>Je facturen, je receptenboek, je prijslijst. Pdf, Excel of een foto van een papiertje.
-          Je zet ze neer en vraagt daarna aan Claude Code om het systeem ermee bij te werken.
-          Hij leest ze en zet de cijfers op de juiste plek, met een kopie van je oude gegevens vooraf.</p>
+          In het systeem op je eigen computer zet je ze neer en vraag je Claude Code om ze te
+          verwerken. Hij leest ze uit en zet de cijfers op de juiste plek, met een kopie van je
+          oude gegevens vooraf.</p>
         </div>
         <div class="uitlegblok">
-          <h3>Of vul het zelf in Excel</h3>
-          <p>Vier lijsten die je downloadt, invult en terugzet: je inkoopprijzen, je recepten met
-          verkoopprijzen, de samenstelling op bakkerspercentage, en je voorraadpartijen. Elke regel
-          die niet klopt komt terug in beeld met de reden erbij.</p>
+          <h3>Ook wat er nog niet in zit</h3>
+          <p>Staat er iets in jouw bestanden waar het systeem geen plek voor heeft, bijvoorbeeld
+          een tweede leverancier, een staffelprijs of een product dat er niet in staat, dan maakt
+          Claude Code die kolommen erbij en past hij de berekening aan.</p>
         </div>
       </div>
-      <p class="sub" style="margin-top:18px">
-        Het pakket downloaden en starten staat uitgelegd op de
-        <a href="../">pagina waar je vandaan kwam</a>.
-      </p>
+
+      <div class="vraagblok">
+        <div class="vraagkop">
+          <h3>Dit vraag je aan Claude Code</h3>
+          <button class="knop" id="knop-kopieer">Tekst kopieren</button>
+        </div>
+        <pre id="vraagtekst">Lees de bestanden in de map bakkerijsysteem/data/aangeleverd en werk mijn
+bakkerijsysteem daarmee bij.
+
+Het gaat om mijn eigen inkoopprijzen, mijn recepten en mijn verkoopprijzen.
+Zet ze in bakkerijsysteem/data/grondstoffen.json, recepten.json en inkoop.json,
+in dezelfde vorm als wat daar nu al staat. Maak eerst een kopie van die drie
+bestanden, zodat ik terug kan.
+
+Staat er in mijn bestanden iets wat het systeem nog niet kent, voeg het dan toe.
+Denk aan grondstoffen die er niet in zitten, producten die ik wel verkoop maar
+die er niet in staan, of gegevens waar nu helemaal geen kolom voor is, zoals een
+tweede leverancier, een staffelprijs, een houdbaarheidsdatum of een andere
+verpakking. Maak die kolommen aan, pas de berekening en de schermen erop aan, en
+leg in gewone taal uit wat je hebt toegevoegd en waarom.
+
+De recepten staan op bakkerspercentage, dus alles ten opzichte van het meel.
+Inkoopprijzen zijn per 100 kg. Verkoopprijzen zijn inclusief btw.
+
+Vertel me daarna in gewone taal wat je hebt gewijzigd, en wat je niet kon
+plaatsen omdat het niet duidelijk was.</pre>
+      </div>
     </div>
   </section>
 

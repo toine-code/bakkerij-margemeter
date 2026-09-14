@@ -138,6 +138,11 @@
   .formulier button{align-self:flex-end}
   .uitslag{font-size:13px;margin:14px 0 0;min-height:1em}
   .uitslag.goed{color:var(--goed)} .uitslag.fout{color:var(--verlies)}
+  .pakket{display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+          background:var(--blauw-zacht);border:1px solid #C4DBF6;border-radius:12px;
+          padding:16px 20px;margin-bottom:16px}
+  .pakket b{display:block;font-family:Montserrat,sans-serif;font-size:15px}
+  .pakket span{display:block;font-size:13.5px;color:var(--muted);margin-top:3px;max-width:64ch}
   .opgooi{display:flex;gap:14px;align-items:center;flex-wrap:wrap;
           border:2px dashed var(--lijn);border-radius:12px;padding:22px 24px;background:#FBFCFE}
   .opgooi-uitleg{font-size:13px;color:var(--muted)}
@@ -410,6 +415,14 @@
         papiertje: het maakt niet uit. Je zet ze hier neer en vraagt daarna aan Claude Code om het
         systeem ermee bij te werken. Die leest ze en zet de cijfers op de juiste plek.
       </p>
+      <div class="pakket">
+        <div>
+          <b>Heb je het systeem nog niet op je computer?</b>
+          <span>Download het hier, pak het uit, en geef de map aan Claude Code. Daarna kun je je eigen bestanden erin zetten.</span>
+        </div>
+        <a class="knop vol" href="https://github.com/toine-code/bakkerij-margemeter/archive/refs/heads/main.zip">Download het systeem</a>
+      </div>
+
       <div class="opgooi" id="opgooi">
         <label class="knop vol">Bestanden kiezen<input type="file" id="bestanden" multiple></label>
         <span class="opgooi-uitleg" id="opgooi-uitleg">Je kunt er meerdere tegelijk kiezen.</span>
@@ -428,6 +441,13 @@ Het gaat om mijn eigen inkoopprijzen, mijn recepten en mijn verkoopprijzen.
 Zet ze in bakkerijsysteem/data/grondstoffen.json, recepten.json en inkoop.json,
 in dezelfde vorm als wat daar nu al staat. Maak eerst een kopie van die drie
 bestanden, zodat ik terug kan.
+
+Staat er in mijn bestanden iets wat het systeem nog niet kent, voeg het dan toe.
+Denk aan grondstoffen die er niet in zitten, producten die ik wel verkoop maar
+die er niet in staan, of gegevens waar nu helemaal geen kolom voor is, zoals een
+tweede leverancier, een staffelprijs, een houdbaarheidsdatum of een andere
+verpakking. Maak die kolommen aan, pas de berekening en de schermen erop aan, en
+leg in gewone taal uit wat je hebt toegevoegd en waarom.
 
 De recepten staan op bakkerspercentage, dus alles ten opzichte van het meel.
 Inkoopprijzen zijn per 100 kg. Verkoopprijzen zijn inclusief btw.
